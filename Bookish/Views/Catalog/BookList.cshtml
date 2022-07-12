@@ -7,17 +7,25 @@
 
 <!DOCTYPE html>
 
-<html>
-<head>
-    <table style="">
-         <tr>
-           <th>Title</th>
+<html lang="en">
+    <head>
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.3/font/bootstrap-icons.css">
+        <link rel="stylesheet" href="//cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css">
+        <script src="//cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+        <title>Book List</title>
+    </head>
+<body>
+<div>
+    <table class="display" style="width:100%" id="myTable">
+        <tr>
+            <th>Title</th>
             <th>Author Name</th>
             <th>Publisher</th>
-             <th>ISBN</th>
-             <th>DatePublished</th>
-             <th>Copies</th>
-         </tr>
+            <th>ISBN</th>
+            <th>DatePublished</th>
+            <th>Copies</th>
+        </tr>
         @foreach (Book b in Model.CatalogEntries)
         {
             <tr>
@@ -27,13 +35,16 @@
                 <td>@b.ISBN</td>
                 <td>@b.DatePublished</td>
                 <td>@b.CopyList.Count</td>
+                <td><button class="btn-outline-info"><i class="bi bi-pencil"></i></button></td>
+                <td><button class="btn-outline-danger"><i class="bi bi-trash"></i></button></td>
             </tr>
         }
     </table>
-</head>
-<body>
-<div>
-      
 </div>
 </body>
+        <script>
+            $(document).ready( function () {
+                $('#myTable').DataTable();
+            } );
+        </script>
 </html>
