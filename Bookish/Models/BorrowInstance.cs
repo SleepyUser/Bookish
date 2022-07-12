@@ -8,4 +8,5 @@ public class BorrowInstance
     public DateTime BorrowDate { get; set; }
     public DateTime ReturnDate { get; set; }
     public bool IsOverdue { get; set; }
+    public bool Returned { get; set; }
 }

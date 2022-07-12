@@ -17,7 +17,7 @@ namespace Bookish.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.0-preview.5.22302.2")
+                .HasAnnotation("ProductVersion", "6.0.6")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
@@ -34,16 +34,11 @@ namespace Bookish.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("AuthorID1")
-                        .HasColumnType("int");
-
                     b.Property<string>("AuthorSurname")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("AuthorID");
-
-                    b.HasIndex("AuthorID1");
 
                     b.ToTable("Authors");
                 });
@@ -81,6 +76,31 @@ namespace Bookish.Migrations
                     b.ToTable("Books");
                 });
 
+            modelBuilder.Entity("Bookish.Models.Borrower", b =>
+                {
+                    b.Property<int>("BorrowerID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("BorrowerID"), 1L, 1);
+
+                    b.Property<string>("Forename")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Surname")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("BorrowerID");
+
+                    b.ToTable("Borrowers");
+                });
+
             modelBuilder.Entity("Bookish.Models.BorrowInstance", b =>
                 {
                     b.Property<int>("BorrowInstanceID")
@@ -104,41 +124,16 @@ namespace Bookish.Migrations
                     b.Property<DateTime>("ReturnDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<bool>("Returned")
+                        .HasColumnType("bit");
+
                     b.HasKey("BorrowInstanceID");
+
+                    b.HasIndex("BorrowerID");
 
                     b.HasIndex("CopyID");
 
                     b.ToTable("BorrowInstances");
-                });
-
-            modelBuilder.Entity("Bookish.Models.Borrower", b =>
-                {
-                    b.Property<int>("BorrowerID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("BorrowerID"), 1L, 1);
-
-                    b.Property<int?>("BorrowerID1")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Forename")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PhoneNumber")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Surname")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("BorrowerID");
-
-                    b.HasIndex("BorrowerID1");
-
-                    b.ToTable("Borrowers");
                 });
 
             modelBuilder.Entity("Bookish.Models.Copy", b =>
@@ -152,7 +147,7 @@ namespace Bookish.Migrations
                     b.Property<int>("BookID")
                         .HasColumnType("int");
 
-                    b.Property<int>("BorrowerID")
+                    b.Property<int?>("BorrowerID")
                         .HasColumnType("int");
 
                     b.Property<string>("Comments")
@@ -168,13 +163,6 @@ namespace Bookish.Migrations
                     b.ToTable("Copies");
                 });
 
-            modelBuilder.Entity("Bookish.Models.Author", b =>
-                {
-                    b.HasOne("Bookish.Models.Author", null)
-                        .WithMany("Aliases")
-                        .HasForeignKey("AuthorID1");
-                });
-
             modelBuilder.Entity("Bookish.Models.Book", b =>
                 {
                     b.HasOne("Bookish.Models.Author", null)
@@ -186,18 +174,17 @@ namespace Bookish.Migrations
 
             modelBuilder.Entity("Bookish.Models.BorrowInstance", b =>
                 {
+                    b.HasOne("Bookish.Models.Borrower", null)
+                        .WithMany("BorrowList")
+                        .HasForeignKey("BorrowerID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Bookish.Models.Copy", null)
                         .WithMany("BorrowInstanceList")
                         .HasForeignKey("CopyID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("Bookish.Models.Borrower", b =>
-                {
-                    b.HasOne("Bookish.Models.Borrower", null)
-                        .WithMany("BorrowerList")
-                        .HasForeignKey("BorrowerID1");
                 });
 
             modelBuilder.Entity("Bookish.Models.Copy", b =>
@@ -210,15 +197,11 @@ namespace Bookish.Migrations
 
                     b.HasOne("Bookish.Models.Borrower", null)
                         .WithMany("CopyList")
-                        .HasForeignKey("BorrowerID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("BorrowerID");
                 });
 
             modelBuilder.Entity("Bookish.Models.Author", b =>
                 {
-                    b.Navigation("Aliases");
-
                     b.Navigation("AuthoredList");
                 });
 
@@ -229,7 +212,7 @@ namespace Bookish.Migrations
 
             modelBuilder.Entity("Bookish.Models.Borrower", b =>
                 {
-                    b.Navigation("BorrowerList");
+                    b.Navigation("BorrowList");
 
                     b.Navigation("CopyList");
                 });

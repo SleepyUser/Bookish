@@ -5,10 +5,8 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Bookish.Migrations
 {
-    /// <inheritdoc />
     public partial class CreateLibraryDB : Migration
     {
-        /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
@@ -18,17 +16,11 @@ namespace Bookish.Migrations
                     AuthorID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     AuthorSurname = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    AuthorForename = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    AuthorID1 = table.Column<int>(type: "int", nullable: true)
+                    AuthorForename = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Authors", x => x.AuthorID);
-                    table.ForeignKey(
-                        name: "FK_Authors_Authors_AuthorID1",
-                        column: x => x.AuthorID1,
-                        principalTable: "Authors",
-                        principalColumn: "AuthorID");
                 });
 
             migrationBuilder.CreateTable(
@@ -39,17 +31,11 @@ namespace Bookish.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Forename = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Surname = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    BorrowerID1 = table.Column<int>(type: "int", nullable: true)
+                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Borrowers", x => x.BorrowerID);
-                    table.ForeignKey(
-                        name: "FK_Borrowers_Borrowers_BorrowerID1",
-                        column: x => x.BorrowerID1,
-                        principalTable: "Borrowers",
-                        principalColumn: "BorrowerID");
                 });
 
             migrationBuilder.CreateTable(
@@ -82,8 +68,8 @@ namespace Bookish.Migrations
                     CopyID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     BookID = table.Column<int>(type: "int", nullable: false),
-                    BorrowerID = table.Column<int>(type: "int", nullable: false),
-                    Comments = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Comments = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    BorrowerID = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -98,8 +84,7 @@ namespace Bookish.Migrations
                         name: "FK_Copies_Borrowers_BorrowerID",
                         column: x => x.BorrowerID,
                         principalTable: "Borrowers",
-                        principalColumn: "BorrowerID",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "BorrowerID");
                 });
 
             migrationBuilder.CreateTable(
@@ -112,11 +97,18 @@ namespace Bookish.Migrations
                     CopyID = table.Column<int>(type: "int", nullable: false),
                     BorrowDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ReturnDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    IsOverdue = table.Column<bool>(type: "bit", nullable: false)
+                    IsOverdue = table.Column<bool>(type: "bit", nullable: false),
+                    Returned = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_BorrowInstances", x => x.BorrowInstanceID);
+                    table.ForeignKey(
+                        name: "FK_BorrowInstances_Borrowers_BorrowerID",
+                        column: x => x.BorrowerID,
+                        principalTable: "Borrowers",
+                        principalColumn: "BorrowerID",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_BorrowInstances_Copies_CopyID",
                         column: x => x.CopyID,
@@ -126,19 +118,14 @@ namespace Bookish.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Authors_AuthorID1",
-                table: "Authors",
-                column: "AuthorID1");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Books_AuthorID",
                 table: "Books",
                 column: "AuthorID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Borrowers_BorrowerID1",
-                table: "Borrowers",
-                column: "BorrowerID1");
+                name: "IX_BorrowInstances_BorrowerID",
+                table: "BorrowInstances",
+                column: "BorrowerID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_BorrowInstances_CopyID",
@@ -156,7 +143,6 @@ namespace Bookish.Migrations
                 column: "BorrowerID");
         }
 
-        /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
