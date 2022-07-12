@@ -16,7 +16,7 @@
             @Html.TextBoxFor(m => m.ISBN, new{@type="text", placeholder="ISBN", pattern="[0-9]{13}", title = "Please enter a 13 digit number"})
             @Html.TextBoxFor(m => m.Publisher, new{@type="text", placeholder="Publisher"})
             @Html.TextBoxFor(m => m.DatePublished, new{@type="date", placeholder="Publish date"})
-            @Html.TextBoxFor(m => m.Author, new{@type="text", placeholder="Author"})
+            @Html.TextBoxFor(m => m.Author, new{@type="text", placeholder="Author", pattern="^[A-Za-z ,.'-]+$" })
             <input type="submit" value="Enter book info" />
 
         </fieldset>
