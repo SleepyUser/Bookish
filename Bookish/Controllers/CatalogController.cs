@@ -13,7 +13,7 @@ public class CatalogController : Controller
     }
     
     // GET
-    public IActionResult BookList()
+    public IActionResult BookEntry()
     {
         using (var context = new LibraryContext())
         {
@@ -38,6 +38,11 @@ public class CatalogController : Controller
             context.Books.Add(book);
             context.SaveChanges();
         }
+        return View();
+    }
+    
+    public IActionResult BookList()
+    {
         return View();
     }
 }
