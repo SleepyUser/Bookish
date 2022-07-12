@@ -25,25 +25,49 @@ public class CatalogController : Controller
         {
             authorNames = new string[] { authorNames[0], "" };
         }
+
+        Book foundBook = new Book();
         using (var context = new LibraryContext())
         {
-            var author = new Author()
+            foundBook = context.Books.SingleOrDefault(a => a.ISBN == isbn);
+            if (foundBook != null)
             {
-                AuthorSurname = authorNames[1],
-                AuthorForename = authorNames[0],
-            };
-            context.Authors.Add(author);
-            context.SaveChanges();
-            var book = new Book()
+                //add one to copies of current book
+                var copy = new Copy()
+                {
+                    BookID = foundBook.BookID,
+                    Comments = "This is a comment",
+                };
+                context.Copies.Add(copy);
+                context.SaveChanges();
+            }
+            else
             {
-                ISBN = isbn,
-                Title = bookName,
-                Publisher = publisher,
-                AuthorID = author.AuthorID,
-                DatePublished = datePublished
-            };
-            context.Books.Add(book);
-            context.SaveChanges();
+                var author = new Author()
+                {
+                    AuthorSurname = authorNames[1],
+                    AuthorForename = authorNames[0],
+                };
+                context.Authors.Add(author);
+                context.SaveChanges();
+                var book = new Book()
+                {
+                    ISBN = isbn,
+                    Title = bookName,
+                    Publisher = publisher,
+                    AuthorID = author.AuthorID,
+                    DatePublished = datePublished
+                };
+                context.Books.Add(book);
+                context.SaveChanges();
+                var copy = new Copy()
+                {
+                    BookID = book.BookID,
+                    Comments = "This is a comment"
+                };
+                context.Copies.Add(copy);
+                context.SaveChanges();
+            }
         }
         return View();
     }
