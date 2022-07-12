@@ -45,7 +45,7 @@ namespace Bookish.Migrations
 
                     b.HasIndex("AuthorID1");
 
-                    b.ToTable("Authors");
+                    b.ToTable("Authors", (string)null);
                 });
 
             modelBuilder.Entity("Bookish.Models.Book", b =>
@@ -78,37 +78,7 @@ namespace Bookish.Migrations
 
                     b.HasIndex("AuthorID");
 
-                    b.ToTable("Books");
-                });
-
-            modelBuilder.Entity("Bookish.Models.BorrowInstance", b =>
-                {
-                    b.Property<int>("BorrowInstanceID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("BorrowInstanceID"), 1L, 1);
-
-                    b.Property<DateTime>("BorrowDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("BorrowerID")
-                        .HasColumnType("int");
-
-                    b.Property<int>("CopyID")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("IsOverdue")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime>("ReturnDate")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("BorrowInstanceID");
-
-                    b.HasIndex("CopyID");
-
-                    b.ToTable("BorrowInstances");
+                    b.ToTable("Books", (string)null);
                 });
 
             modelBuilder.Entity("Bookish.Models.Borrower", b =>
@@ -138,7 +108,37 @@ namespace Bookish.Migrations
 
                     b.HasIndex("BorrowerID1");
 
-                    b.ToTable("Borrowers");
+                    b.ToTable("Borrowers", (string)null);
+                });
+
+            modelBuilder.Entity("Bookish.Models.BorrowInstance", b =>
+                {
+                    b.Property<int>("BorrowInstanceID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("BorrowInstanceID"), 1L, 1);
+
+                    b.Property<DateTime>("BorrowDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("BorrowerID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CopyID")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsOverdue")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("ReturnDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("BorrowInstanceID");
+
+                    b.HasIndex("CopyID");
+
+                    b.ToTable("BorrowInstances", (string)null);
                 });
 
             modelBuilder.Entity("Bookish.Models.Copy", b =>
@@ -165,7 +165,7 @@ namespace Bookish.Migrations
 
                     b.HasIndex("BorrowerID");
 
-                    b.ToTable("Copies");
+                    b.ToTable("Copies", (string)null);
                 });
 
             modelBuilder.Entity("Bookish.Models.Author", b =>
@@ -184,6 +184,13 @@ namespace Bookish.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("Bookish.Models.Borrower", b =>
+                {
+                    b.HasOne("Bookish.Models.Borrower", null)
+                        .WithMany("BorrowerList")
+                        .HasForeignKey("BorrowerID1");
+                });
+
             modelBuilder.Entity("Bookish.Models.BorrowInstance", b =>
                 {
                     b.HasOne("Bookish.Models.Copy", null)
@@ -191,13 +198,6 @@ namespace Bookish.Migrations
                         .HasForeignKey("CopyID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("Bookish.Models.Borrower", b =>
-                {
-                    b.HasOne("Bookish.Models.Borrower", null)
-                        .WithMany("BorrowerList")
-                        .HasForeignKey("BorrowerID1");
                 });
 
             modelBuilder.Entity("Bookish.Models.Copy", b =>
