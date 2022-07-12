@@ -40,7 +40,7 @@ namespace Bookish.Migrations
 
                     b.HasKey("AuthorID");
 
-                    b.ToTable("Authors");
+                    b.ToTable("Authors", (string)null);
                 });
 
             modelBuilder.Entity("Bookish.Models.Book", b =>
@@ -73,7 +73,7 @@ namespace Bookish.Migrations
 
                     b.HasIndex("AuthorID");
 
-                    b.ToTable("Books");
+                    b.ToTable("Books", (string)null);
                 });
 
             modelBuilder.Entity("Bookish.Models.Borrower", b =>
@@ -98,7 +98,7 @@ namespace Bookish.Migrations
 
                     b.HasKey("BorrowerID");
 
-                    b.ToTable("Borrowers");
+                    b.ToTable("Borrowers", (string)null);
                 });
 
             modelBuilder.Entity("Bookish.Models.BorrowInstance", b =>
@@ -133,7 +133,7 @@ namespace Bookish.Migrations
 
                     b.HasIndex("CopyID");
 
-                    b.ToTable("BorrowInstances");
+                    b.ToTable("BorrowInstances", (string)null);
                 });
 
             modelBuilder.Entity("Bookish.Models.Copy", b =>
@@ -160,7 +160,7 @@ namespace Bookish.Migrations
 
                     b.HasIndex("BorrowerID");
 
-                    b.ToTable("Copies");
+                    b.ToTable("Copies", (string)null);
                 });
 
             modelBuilder.Entity("Bookish.Models.Book", b =>

@@ -7,7 +7,9 @@ public class Book
     public string ISBN { get; set; }
     public string Title { get; set; }
     public int AuthorID { get; set; }
+    public virtual Author Author { get; set; }
     public string Publisher { get; set; }
     public DateTime DatePublished { get; set; }
+    
     public ICollection<Copy> CopyList { get; set; }
 }

@@ -9,25 +9,27 @@
 
 <html>
 <head>
-    @*<table style="">
+    <table style="">
          <tr>
            <th>Title</th>
-           <th>Author Name</th>
-             <th>Publisher</th>
+            <th>Author Name</th>
+            <th>Publisher</th>
              <th>ISBN</th>
+             <th>DatePublished</th>
+             <th>Copies</th>
          </tr>
-        @foreach (Book b in BookViewModel.books)
+        @foreach (Book b in Model.CatalogEntries)
         {
-            {
-                <tr>
-                    <td>@b.title</td>
-                    <td>@b.authorSurname:, @b.authorForename</td>
-                    <td>@b.publisher</td>
-                    <td>@b.ISBN</td>
-                </tr>
-            }
+            <tr>
+                <td>@b.Title</td>
+                <td>@b.Author.AuthorSurname, @b.Author.AuthorForename</td>
+                <td>@b.Publisher</td>
+                <td>@b.ISBN</td>
+                <td>@b.DatePublished</td>
+                <td>@b.CopyList.Count</td>
+            </tr>
         }
-    </table>*@
+    </table>
 </head>
 <body>
 <div>

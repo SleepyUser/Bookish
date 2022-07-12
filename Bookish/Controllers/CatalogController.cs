@@ -1,5 +1,6 @@
 ﻿using Bookish.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace Bookish.Controllers;
 
@@ -43,6 +44,28 @@ public class CatalogController : Controller
     
     public IActionResult BookList()
     {
-        return View();
+        BookViewModel bvm = new BookViewModel();
+        using (var context = new LibraryContext())
+        {
+            bvm.CatalogEntries = context.Books.Include(b => b.Author)
+                .Include(b => b.CopyList).ToList();
+            /*var query = (from b in context.Books
+                join a in context.Authors on b.AuthorID equals a.AuthorID
+                select (
+                    //b.Title
+                    a.AuthorSurname
+                    //Forename = a.AuthorForename,
+                    //b.Publisher,
+                    //b.DatePublished,
+                    //b.ISBN
+                    //b.CopyList.Count
+                ));
+            //bvm.RawCatalogEntries = query;
+            var list = query.ToList();*/
+            
+        }
+        return View(bvm);
     }
+    
+    
 }
