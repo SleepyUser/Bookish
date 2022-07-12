@@ -24,14 +24,15 @@ public class CatalogController : Controller
             };
             
             context.Authors.Add(author);
+            context.SaveChanges();
             
             var book = new Book()
             {
                 ISBN = "9781720025191",
                 Title = "How to Build A PHP 7 Framework: With an Introduction to Composer, Interface, Trait, Horizontal Reuse of code, PDO, and MVC Pattern",
                 Publisher = "independent",
-                //AuthorID = author.AuthorID,
-                DatePublished = new DateTime(01/09/2018)
+                AuthorID = author.AuthorID,
+                DatePublished = new DateTime(2018,09,01)
             };
             
             context.Books.Add(book);
