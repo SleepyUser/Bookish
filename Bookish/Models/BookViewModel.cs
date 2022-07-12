@@ -5,7 +5,7 @@ namespace Bookish.Models;
 
 public class BookViewModel
 {
-    public List<Book> books = new List<Book>() {        new Book(
+    public static List<Book> books = new List<Book>() {        new Book(
         "Charlie and the Chocolate Factory", 
         "0142410314", 
         "Usborne", 
@@ -24,9 +24,9 @@ public class Book
         this.authorForename = authorForename;
     }
 
-    private readonly string ISBN;
-    private string title;
-    private string authorForename;
-    private string authorSurname;
-    private string publisher;
+    public readonly string ISBN;
+    public string title;
+    public string authorForename;
+    public string authorSurname;
+    public string publisher;
 }

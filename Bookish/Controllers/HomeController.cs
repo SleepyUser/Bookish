@@ -23,6 +23,11 @@ public class HomeController : Controller
         return View();
     }
 
+    public IActionResult BookList()
+    {
+        return View("BookList");
+    }
+
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()
     {

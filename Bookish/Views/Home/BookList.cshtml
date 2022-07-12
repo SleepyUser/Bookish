@@ -2,7 +2,6 @@
 @model Bookish.Models.BookViewModel
 
 @{
-    Layout = null;
     ViewBag.Title = "Book List";
 }
 
@@ -10,7 +9,26 @@
 
 <html>
 <head>
-    @foreach()
+    <table style="">
+         <tr>
+           <th>Title</th>
+           <th>Author Name</th>
+             <th>Publisher</th>
+             <th>ISBN</th>
+         </tr>
+        @foreach (Book b in BookViewModel.books)
+        {
+            {
+                <tr>
+                    <td>@b.title</td>
+                    <td>@b.authorSurname:, @b.authorForename</td>
+                    <td>@b.publisher</td>
+                    <td>@b.ISBN</td>
+                </tr>
+            }
+        }
+    </table>
+   
 
 </head>
 <body>
