@@ -1,6 +1,8 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
 }
+@using Bookish.Models
+@model BookInputModel
 
 <div class="text-center">
     <h1 class="display-4">Welcome</h1>
@@ -8,7 +10,15 @@
     @using (Html.BeginForm("BookEntry", "Catalog", FormMethod.Get))
     {
         <fieldset>
-            <button>run</button>
+            
+            <legend>Enter a book:</legend>
+            @Html.TextBoxFor(m => m.BookName, new{@type="text", placeholder="Book name"})
+            @Html.TextBoxFor(m => m.ISBN, new{@type="text", placeholder="ISBN", pattern="[0-9]{13}", title = "Please enter a 13 digit number"})
+            @Html.TextBoxFor(m => m.Publisher, new{@type="text", placeholder="Publisher"})
+            @Html.TextBoxFor(m => m.DatePublished, new{@type="date", placeholder="Publish date"})
+            @Html.TextBoxFor(m => m.Author, new{@type="text", placeholder="Author"})
+            <input type="submit" value="Enter book info" />
+
         </fieldset>
     }
 </div>
