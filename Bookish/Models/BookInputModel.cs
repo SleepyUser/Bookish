@@ -7,4 +7,5 @@ public class BookInputModel
     public string Publisher { get; set; }
     public DateTime DatePublished { get; set; }
     public string Author { get; set; }
+    public int NewCopies { get; set; }
 }

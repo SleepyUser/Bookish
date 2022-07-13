@@ -13,58 +13,94 @@ public class CatalogController : Controller
         _logger = logger;
     }
     
-    // GET
-    public IActionResult BookEntry(BookInputModel model)
+    [HttpPost]
+    public IActionResult AddNewBook(BookOrBorrowerInputModel model)
     {
-        string bookName = model.BookName;
-        string isbn = model.ISBN;
-        string publisher = model.Publisher;
-        DateTime datePublished = model.DatePublished;
-        string[] authorNames = model.Author.Split(" ");
+        string bookName = model.BookInput.BookName;
+        string isbn = model.BookInput.ISBN;
+        string publisher = model.BookInput.Publisher;
+        DateTime datePublished = model.BookInput.DatePublished;
+        string[] authorNames = model.BookInput.Author.Split(" ");
+        int newCopies = model.BookInput.NewCopies;
         using (var context = new LibraryContext())
         {
-            var author = new Author()
+            Book? foundBook = context.Books.SingleOrDefault(a =>
+                a.ISBN == isbn &&
+                a.Title == bookName &&
+                a.Publisher == publisher &&
+                a.DatePublished == datePublished &&
+                a.Author.AuthorSurname == authorNames[1] &&
+                a.Author.AuthorForename == authorNames[0]);
+            if (foundBook != null)
             {
-                AuthorSurname = authorNames[1],
-                AuthorForename = authorNames[0],
-            };
-            context.Authors.Add(author);
-            context.SaveChanges();
-            var book = new Book()
+                AddCopiesOfBook(newCopies, context, foundBook);
+            }
+            else
             {
-                ISBN = isbn,
-                Title = bookName,
-                Publisher = publisher,
-                AuthorID = author.AuthorID,
-                DatePublished = datePublished
-            };
-            context.Books.Add(book);
-            context.SaveChanges();
+                var author = new Author()
+                {
+                    AuthorSurname = authorNames[1],
+                    AuthorForename = authorNames[0],
+                };
+                context.Authors.Add(author);
+                context.SaveChanges();
+                var book = new Book()
+                {
+                    ISBN = isbn,
+                    Title = bookName,
+                    Publisher = publisher,
+                    AuthorID = author.AuthorID,
+                    DatePublished = datePublished
+                };
+                context.Books.Add(book);
+                context.SaveChanges();
+                AddCopiesOfBook(newCopies, context, book);
+            }
         }
-        /*using (var context = new LibraryContext())
-        {
-            var author = new Author()
-            {
-                AuthorSurname = "Sinha",
-                AuthorForename = "Sanjib",
-            };
-            
-            context.Authors.Add(author);
-            context.SaveChanges();
-            
-            var book = new Book()
-            {
-                ISBN = "9781720025191",
-                Title = "How to Build A PHP 7 Framework: With an Introduction to Composer, Interface, Trait, Horizontal Reuse of code, PDO, and MVC Pattern",
-                Publisher = "independent",
-                AuthorID = author.AuthorID,
-                DatePublished = new DateTime(2018,09,01)
-            };
-            
-            context.Books.Add(book);
-            context.SaveChanges();
-        }*/
         return View();
+    }
+    
+    public IActionResult AddNewBorrower(BookOrBorrowerInputModel model)
+    {
+        string surname = model.BorrowerInput.Surname;
+        string forename = model.BorrowerInput.Forename;
+        string phonenumber = model.BorrowerInput.PhoneNumber;
+        using (var context = new LibraryContext())
+        {
+            Borrower? foundBorrower = context.Borrowers.SingleOrDefault(a => a.Surname == surname && a.Forename == forename && a.PhoneNumber == phonenumber );
+            if (foundBorrower != null)
+            {
+                //member already exists, do something
+            }
+            else
+            {
+                var borrower = new Borrower()
+                {
+                    Surname = surname,
+                    Forename = forename,
+                    PhoneNumber = phonenumber
+                };
+                context.Borrowers.Add(borrower);
+                context.SaveChanges();
+            }
+        }
+        return View();
+    }
+
+    public void AddCopiesOfBook(int newCopies, LibraryContext context, Book book)
+    {
+        List<Copy> newCopyList = new List<Copy>();
+        for (int i = 0; i < newCopies; i++)
+        {
+            var copy = new Copy()
+            {
+                BookID = book.BookID,
+                Comments = "This is a comment"
+            };
+            newCopyList.Add(copy);
+        }
+        context.Copies.AddRange(newCopyList);
+        context.SaveChanges();
     }
     
     public IActionResult BookList()
@@ -73,24 +109,15 @@ public class CatalogController : Controller
         using (var context = new LibraryContext())
         {
             bvm.CatalogEntries = context.Books.Include(b => b.Author)
-                .Include(b => b.CopyList).ToList();
-            /*var query = (from b in context.Books
-                join a in context.Authors on b.AuthorID equals a.AuthorID
-                select (
-                    //b.Title
-                    a.AuthorSurname
-                    //Forename = a.AuthorForename,
-                    //b.Publisher,
-                    //b.DatePublished,
-                    //b.ISBN
-                    //b.CopyList.Count
-                ));
-            //bvm.RawCatalogEntries = query;
-            var list = query.ToList();*/
-            
+                .Include(b => b.CopyList)
+                .ToList();
         }
         return View(bvm);
     }
-    
-    
+
+    /*public IActionResult SortList(BookViewModel modelToSort)
+    {
+        return View(modelToSort);
+    }*/
+
 }

@@ -1,24 +1,37 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
 }
-@using Bookish.Models
-@model BookInputModel
 
+@model BookOrBorrowerInputModel
 <div class="text-center">
     <h1 class="display-4">Welcome</h1>
     <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-    @using (Html.BeginForm("BookEntry", "Catalog", FormMethod.Get))
+    @using (Html.BeginForm("AddNewBook", "Catalog", FormMethod.Post))
     {
+        
         <fieldset>
-            
             <legend>Enter a book:</legend>
-            @Html.TextBoxFor(m => m.BookName, new{@type="text", placeholder="Book name"})
-            @Html.TextBoxFor(m => m.ISBN, new{@type="text", placeholder="ISBN", pattern="[0-9]{13}", title = "Please enter a 13 digit number"})
-            @Html.TextBoxFor(m => m.Publisher, new{@type="text", placeholder="Publisher"})
-            @Html.TextBoxFor(m => m.DatePublished, new{@type="date", placeholder="Publish date"})
-            @Html.TextBoxFor(m => m.Author, new{@type="text", placeholder="Author"})
+            @Html.TextBoxFor(m => m.BookInput.BookName, new{@type="text", placeholder="Book name"})
+            @Html.TextBoxFor(m => m.BookInput.ISBN, new{@type="text", placeholder="ISBN", pattern="[0-9]{13}", title = "Please enter a 13 digit number"})
+            @Html.TextBoxFor(m => m.BookInput.Publisher, new{@type="text", placeholder="Publisher"})
+            @Html.TextBoxFor(m => m.BookInput.DatePublished, new{@type="date", placeholder="Publish date"})
+            @Html.TextBoxFor(m => m.BookInput.Author, new{@type="text", placeholder="Author", pattern="^[A-Za-z ,.'-]+$" })
+            @Html.TextBoxFor(m => m.BookInput.NewCopies, new{@type="number", placeholder="copies"})
             <input type="submit" value="Enter book info" />
 
         </fieldset>
     }
+    
+    @using (Html.BeginForm("AddNewBorrower", "Catalog", FormMethod.Post))
+        {
+            <fieldset>
+                
+                <legend>Enter a borrower:</legend>
+                @Html.TextBoxFor(m => m.BorrowerInput.PhoneNumber, new{@type="text", placeholder="Phone number", pattern="^[\\+]?[(]?[0-9]{3}[)]?[-\\s\\.]?[0-9]{3}[-\\s\\.]?[0-9]{4,6}$", title = "Please enter a phone number"})
+                @Html.TextBoxFor(m => m.BorrowerInput.Forename, new{@type="text", placeholder="Forename", pattern="^[A-Za-z ,.'-]+$" })
+                @Html.TextBoxFor(m => m.BorrowerInput.Surname, new{@type="text", placeholder="Surname", pattern="^[A-Za-z ,.'-]+$" })
+                <input type="submit" value="Enter borrower info" />
+    
+            </fieldset>
+        }
 </div>
