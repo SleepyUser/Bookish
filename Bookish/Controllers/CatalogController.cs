@@ -21,6 +21,10 @@ public class CatalogController : Controller
         string publisher = model.BookInput.Publisher;
         DateTime datePublished = model.BookInput.DatePublished;
         string[] authorNames = model.BookInput.Author.Split(" ");
+        if (authorNames.Length == 1)
+        {
+            authorNames = new string[] { authorNames[0], "" };
+        }
         int newCopies = model.BookInput.NewCopies;
         using (var context = new LibraryContext())
         {
@@ -101,6 +105,7 @@ public class CatalogController : Controller
         }
         context.Copies.AddRange(newCopyList);
         context.SaveChanges();
+    }
     }
     
     public IActionResult BookList()
