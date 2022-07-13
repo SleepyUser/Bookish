@@ -26,8 +26,7 @@ public class CatalogController : Controller
         {
             authorNames = new string[] { authorNames[0], "" };
         }
-
-        Book foundBook = new Book();
+        
         int newCopies = model.NewCopies;
         using (var context = new LibraryContext())
         {
