@@ -118,7 +118,6 @@ public class CatalogController : Controller
         return View();
     }
     
-
     public void AddCopiesOfBook(int newCopies, LibraryContext context, Book book)
     {
         List<Copy> newCopyList = new List<Copy>();
@@ -141,8 +140,6 @@ public class CatalogController : Controller
         BookViewModel bvm = new BookViewModel();
         using (var context = new LibraryContext())
         {
-            bvm.CatalogEntries = context.Books.Include(b => b.Author)
-                .Include(b => b.CopyList).ToList();
             bvm.CatalogEntries = context.Books.Include(b => b.Author)
                 .Include(c => c.CopyList)
                 .ToList();
