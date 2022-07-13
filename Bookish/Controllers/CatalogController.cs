@@ -21,14 +21,29 @@ public class CatalogController : Controller
         string isbn = model.ISBN;
         string publisher = model.Publisher;
         DateTime datePublished = model.DatePublished;
-        string[] authorNames = model.Author.Split(" ");
+        string[] authorNames = model.Author.Split(" ", 2);
+        if (authorNames.Length == 1)
+        {
+            authorNames = new string[] { authorNames[0], "" };
+        }
+
+        Book foundBook = new Book();
         int newCopies = model.NewCopies;
         using (var context = new LibraryContext())
         {
             foundBook = context.Books.SingleOrDefault(a => a.ISBN == isbn);
             if (foundBook != null)
             {
-                AddXCopies(newCopies, context, foundBook);
+                for (int i = 0; i < newCopies; i++)
+                {
+                    var copy = new Copy()
+                    {
+                        BookID = foundBook.BookID,
+                        Comments = "This is a comment",
+                    };
+                    context.Copies.Add(copy);
+                    context.SaveChanges();
+                }
             }
             else
             {
@@ -74,9 +89,8 @@ public class CatalogController : Controller
         BookViewModel bvm = new BookViewModel();
         using (var context = new LibraryContext())
         {
-            bvm.EntryQuery = context.Books.Include(b => b.Author)
-                .Include(b => b.CopyList);
-            bvm.CatalogEntries = bvm.EntryQuery.ToList();
+            bvm.CatalogEntries = context.Books.Include(b => b.Author)
+                .Include(b => b.CopyList).ToList();
         }
         return View(bvm);
     }
