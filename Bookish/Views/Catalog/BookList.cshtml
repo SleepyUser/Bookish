@@ -41,8 +41,72 @@
                 <td>@b.ISBN</td>
                 <td>@b.DatePublished</td>
                 <td>@b.CopyList.Count</td>
-                <td><button class="btn-outline-info"><i class="bi bi-pencil"></i></button></td>
-                <td><button class="btn-outline-danger"><i class="bi bi-trash"></i></button></td>
+                @using (Html.BeginForm("EditBook", "Catalog", FormMethod.Get))
+                {
+                    <td><button class="btn-outline-info"><i class="bi bi-pencil"></i></button></td>
+                }
+                @using (Html.BeginForm("DeleteBook", "Catalog", FormMethod.Get))
+                {
+                    <td><button class="btn-outline-danger"><i class="bi bi-trash" value="@b.BookID"></i></button></td>
+                }
+
+
+                @*<script>
+                function format(@(b)) {
+                    // `d` is the original data object for the row
+                    let a = "";
+                    a = '<table cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;">'
+                    for(let c in b.CopyList)
+                    {
+                        //c.BorrowInstanceList.sort(function (a,b){return a.isReturned)
+                        a = a + '<tr>' +
+                        '<td>Comments</td>' +
+                        '<td>' +
+                        c.Comments +
+                        '</td>' +
+                        '</tr>' 
+                    }
+
+                    '</table>'
+                    return (a);
+                }
+                $(b).ready(
+                    function () {
+                    var table = $('#mytable').DataTable({
+                        //ajax: '../ajax/data/objects.txt',
+                        columns: [
+                            {
+                                className: 'dt-control',
+                                orderable: false,
+                                data: null,
+                                defaultContent: '',
+                            },
+                            { data: 'Title' },
+                            { data: 'Author Name' },
+                            { data: 'Publisher' },
+                            { data: 'ISBN' },
+                            { data: 'DatePublished'},
+                            { data: 'Copies'}
+                        ],
+                        order: [[1, 'asc']],
+                    });
+                 
+                    // Add event listener for opening and closing details
+                    $('#myTable tbody').on('click', 'td.dt-control', function () {
+                        var tr = $(this).closest('tr');
+                        var row = table.row(tr);
+                 
+                        if (row.child.isShown()) {
+                            // This row is already open - close it
+                            row.child.hide();
+                            tr.removeClass('shown');
+                        } else {
+                            // Open this row
+                            row.child(format(row.data())).show();
+                            tr.addClass('shown');
+                        }
+                    });
+                </script>*@
             </tr>
         }
         </tbody>
