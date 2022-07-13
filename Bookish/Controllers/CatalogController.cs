@@ -25,6 +25,7 @@ public class CatalogController : Controller
         {
             authorNames = new string[] { authorNames[0], "" };
         }
+        
         int newCopies = model.BookInput.NewCopies;
         using (var context = new LibraryContext())
         {
@@ -106,7 +107,7 @@ public class CatalogController : Controller
         context.Copies.AddRange(newCopyList);
         context.SaveChanges();
     }
-    }
+    
     
     public IActionResult BookList()
     {
@@ -133,5 +134,5 @@ public class CatalogController : Controller
     {
         return View(modelToSort);
     }*/
-
+    
 }
