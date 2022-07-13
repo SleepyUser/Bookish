@@ -20,55 +20,50 @@ public class CatalogController : Controller
         string isbn = model.ISBN;
         string publisher = model.Publisher;
         DateTime datePublished = model.DatePublished;
-        string[] authorNames = model.Author.Split(" ", 2);
-        if (authorNames.Length == 1)
-        {
-            authorNames = new string[] { authorNames[0], "" };
-        }
-
-        Book foundBook = new Book();
+        string[] authorNames = model.Author.Split(" ");
         using (var context = new LibraryContext())
         {
-            foundBook = context.Books.SingleOrDefault(a => a.ISBN == isbn);
-            if (foundBook != null)
+            var author = new Author()
             {
-                //add one to copies of current book
-                var copy = new Copy()
-                {
-                    BookID = foundBook.BookID,
-                    Comments = "This is a comment",
-                };
-                context.Copies.Add(copy);
-                context.SaveChanges();
-            }
-            else
+                AuthorSurname = authorNames[1],
+                AuthorForename = authorNames[0],
+            };
+            context.Authors.Add(author);
+            context.SaveChanges();
+            var book = new Book()
             {
-                var author = new Author()
-                {
-                    AuthorSurname = authorNames[1],
-                    AuthorForename = authorNames[0],
-                };
-                context.Authors.Add(author);
-                context.SaveChanges();
-                var book = new Book()
-                {
-                    ISBN = isbn,
-                    Title = bookName,
-                    Publisher = publisher,
-                    AuthorID = author.AuthorID,
-                    DatePublished = datePublished
-                };
-                context.Books.Add(book);
-                context.SaveChanges();
-                var copy = new Copy()
-                {
-                    BookID = book.BookID,
-                    Comments = "This is a comment"
-                };
-                context.Copies.Add(copy);
-                context.SaveChanges();
-            }
+                ISBN = isbn,
+                Title = bookName,
+                Publisher = publisher,
+                AuthorID = author.AuthorID,
+                DatePublished = datePublished
+            };
+            context.Books.Add(book);
+            context.SaveChanges();
         }
+        /*using (var context = new LibraryContext())
+        {
+            var author = new Author()
+            {
+                AuthorSurname = "Sinha",
+                AuthorForename = "Sanjib",
+            };
+            
+            context.Authors.Add(author);
+            context.SaveChanges();
+            
+            var book = new Book()
+            {
+                ISBN = "9781720025191",
+                Title = "How to Build A PHP 7 Framework: With an Introduction to Composer, Interface, Trait, Horizontal Reuse of code, PDO, and MVC Pattern",
+                Publisher = "independent",
+                AuthorID = author.AuthorID,
+                DatePublished = new DateTime(2018,09,01)
+            };
+            
+            context.Books.Add(book);
+            context.SaveChanges();
+        }*/
         return View();
     }
     
@@ -77,11 +72,16 @@ public class CatalogController : Controller
         BookViewModel bvm = new BookViewModel();
         using (var context = new LibraryContext())
         {
-            bvm.CatalogEntries = context.Books.Include(b => b.Author)
-                .Include(b => b.CopyList).ToList();
+            bvm.EntryQuery = context.Books.Include(b => b.Author)
+                .Include(b => b.CopyList);
+            bvm.CatalogEntries = bvm.EntryQuery.ToList();
         }
         return View(bvm);
     }
-    
+
+    /*public IActionResult SortList(BookViewModel modelToSort)
+    {
+        return View(modelToSort);
+    }*/
     
 }
