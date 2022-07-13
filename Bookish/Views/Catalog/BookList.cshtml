@@ -36,7 +36,11 @@
         {
             <tr>
                 <td>@b.Title</td>
-                <td>@b.Author.AuthorSurname, @b.Author.AuthorForename</td>
+                <td>
+                    @b.Author.AuthorSurname
+                    @((b.Author.AuthorSurname != "") ? "," : "")
+                    @b.Author.AuthorForename
+                </td>
                 <td>@b.Publisher</td>
                 <td>@b.ISBN</td>
                 <td>@b.DatePublished</td>
