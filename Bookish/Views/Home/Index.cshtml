@@ -36,7 +36,7 @@
     {
         <fieldset>
             
-            <legend>Enter a borrower:</legend>
+            <legend>Enter a user:</legend>
             <b>User phone number : </b>@Html.TextBoxFor(m => m.BorrowerInput.PhoneNumber, new{@type="text", placeholder="Phone number", pattern="^[\\+]?[(]?[0-9]{3}[)]?[-\\s\\.]?[0-9]{3}[-\\s\\.]?[0-9]{4,6}$", title = "Please enter a phone number"})<br/>
             <b>User first name : </b>@Html.TextBoxFor(m => m.BorrowerInput.Forename, new{@type="text", placeholder="Forename", pattern="^[A-Za-z ,.'-]+$" })<br/>
             <b>User surname : </b>@Html.TextBoxFor(m => m.BorrowerInput.Surname, new{@type="text", placeholder="Surname", pattern="^[A-Za-z ,.'-]+$" })<br/><br/>
