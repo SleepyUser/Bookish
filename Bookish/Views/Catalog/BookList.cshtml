@@ -1,4 +1,4 @@
-﻿@using Microsoft.EntityFrameworkCore.Metadata.Internal
+@using Microsoft.EntityFrameworkCore.Metadata.Internal
 @model Bookish.Models.BookViewModel
 
 @{
@@ -17,41 +17,41 @@
         <title>Book List</title>
     </head>
     <body>
-    <div>
-        <table class="display" id="myTable">
-            <thead>
-            <tr>
-                <th>Title</th>
-                <th>Author Name</th>
-                <th>Publisher</th>
-                <th>ISBN</th>
-                <th>DatePublished</th>
-                <th>Copies</th>
-                <th></th>
-                <th></th>
-            </tr>
-            </thead>
-            <tbody>
-            @foreach (Book b in Model.CatalogEntries)
-            {
+        <div>
+            <table class="display" id="myTable">
+                <thead>
                 <tr>
-                    <td>@b.Title</td>
-                    <td>
-                        @b.Author.AuthorSurname
-                        @((b.Author.AuthorSurname != "") ? "," : "")
-                        @b.Author.AuthorForename
-                    </td>
-                    <td>@b.Publisher</td>
-                    <td>@b.ISBN</td>
-                    <td>@b.DatePublished</td>
-                    <td>@b.CopyList.Count</td>
-                    <td><button class="btn-outline-info"><i class="bi bi-pencil"></i></button></td>
-                    <td><button class="btn-outline-danger"><i class="bi bi-trash"></i></button></td>
+                    <th>Title</th>
+                    <th>Author Name</th>
+                    <th>Publisher</th>
+                    <th>ISBN</th>
+                    <th>DatePublished</th>
+                    <th>Copies</th>
+                    <th></th>
+                    <th></th>
                 </tr>
-            }
-            </tbody>
-        </table>
-    </div>
+                </thead>
+                <tbody>
+                @foreach (Book b in Model.CatalogEntries)
+                {
+                    <tr>
+                        <td>@b.Title</td>
+                        <td>
+                            @b.Author.AuthorSurname
+                            @((b.Author.AuthorSurname != "") ? "," : "")
+                            @b.Author.AuthorForename
+                        </td>
+                        <td>@b.Publisher</td>
+                        <td>@b.ISBN</td>
+                        <td>@b.DatePublished</td>
+                        <td>@b.CopyList.Count</td>
+                        <td><button class="btn-outline-info"><i class="bi bi-pencil"></i></button></td>
+                        <td><button class="btn-outline-danger"><i class="bi bi-trash"></i></button></td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </div>
     </body>
     <script>
         $(document).ready( function () {
