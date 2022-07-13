@@ -28,16 +28,7 @@ public class CatalogController : Controller
             foundBook = context.Books.SingleOrDefault(a => a.ISBN == isbn);
             if (foundBook != null)
             {
-                for (int i = 0; i < newCopies; i++)
-                {
-                    var copy = new Copy()
-                    {
-                        BookID = foundBook.BookID,
-                        Comments = "This is a comment",
-                    };
-                    context.Copies.Add(copy);
-                    context.SaveChanges();
-                }
+                AddXCopies(newCopies, context, foundBook);
             }
             else
             {
@@ -58,19 +49,24 @@ public class CatalogController : Controller
                 };
                 context.Books.Add(book);
                 context.SaveChanges();
-                for (int i = 0; i < newCopies; i++)
-                {
-                    var copy = new Copy()
-                    {
-                        BookID = book.BookID,
-                        Comments = "This is a comment"
-                    };
-                    context.Copies.Add(copy);
-                    context.SaveChanges();
-                }
+                AddXCopies(newCopies, context, book);
             }
         }
         return View();
+    }
+
+    public void AddXCopies(int newCopies, LibraryContext context, Book book)
+    {
+        for (int i = 0; i < newCopies; i++)
+        {
+            var copy = new Copy()
+            {
+                BookID = book.BookID,
+                Comments = "This is a comment"
+            };
+            context.Copies.Add(copy);
+            context.SaveChanges();
+        }
     }
     
     public IActionResult BookList()
