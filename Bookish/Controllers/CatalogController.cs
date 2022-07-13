@@ -109,7 +109,7 @@ public class CatalogController : Controller
         return View();
     }
     
-    public IActionResult BorrowerEntry(DefaultInputModel model)
+    public IActionResult AddNewBorrower(BookOrBorrowerInputModel model)
     {
         string surname = model.BorrowerInput.Surname;
         string forename = model.BorrowerInput.Forename;
