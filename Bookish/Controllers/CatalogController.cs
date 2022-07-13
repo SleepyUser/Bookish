@@ -13,7 +13,7 @@ public class CatalogController : Controller
         _logger = logger;
     }
     
-    // [HttpPost]
+    [HttpPost]
     public IActionResult AddNewBook(BookOrBorrowerInputModel model)
     {
         string bookName = model.BookInput.BookName;
