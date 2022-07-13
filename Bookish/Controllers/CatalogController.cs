@@ -14,14 +14,14 @@ public class CatalogController : Controller
     }
     
     // GET
-    public IActionResult BookEntry(BookInputModel model)
+    public IActionResult BookEntry(DefaultInputModel model)
     {
-        string bookName = model.BookName;
-        string isbn = model.ISBN;
-        string publisher = model.Publisher;
-        DateTime datePublished = model.DatePublished;
-        string[] authorNames = model.Author.Split(" ");
-        int newCopies = model.NewCopies;
+        string bookName = model.BookInput.BookName;
+        string isbn = model.BookInput.ISBN;
+        string publisher = model.BookInput.Publisher;
+        DateTime datePublished = model.BookInput.DatePublished;
+        string[] authorNames = model.BookInput.Author.Split(" ");
+        int newCopies = model.BookInput.NewCopies;
         using (var context = new LibraryContext())
         {
             Book? foundBook = context.Books.SingleOrDefault(a =>
@@ -59,6 +59,33 @@ public class CatalogController : Controller
         }
         return View();
     }
+    
+    public IActionResult BorrowerEntry(DefaultInputModel model)
+    {
+        string surname = model.BorrowerInput.Surname;
+        string forename = model.BorrowerInput.Forename;
+        string phonenumber = model.BorrowerInput.PhoneNumber;
+        using (var context = new LibraryContext())
+        {
+            Borrower? foundBorrower = context.Borrowers.SingleOrDefault(a => a.Surname == surname && a.Forename == forename && a.PhoneNumber == phonenumber );
+            if (foundBorrower != null)
+            {
+                //member already exists, do something
+            }
+            else
+            {
+                var borrower = new Borrower()
+                {
+                    Surname = surname,
+                    Forename = forename,
+                    PhoneNumber = phonenumber
+                };
+                context.Borrowers.Add(borrower);
+                context.SaveChanges();
+            }
+        }
+        return View();
+    }
 
     public void AddXCopies(int newCopies, LibraryContext context, Book book)
     {
@@ -90,5 +117,5 @@ public class CatalogController : Controller
     {
         return View(modelToSort);
     }*/
-    
+
 }
