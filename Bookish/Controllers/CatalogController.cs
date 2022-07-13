@@ -125,6 +125,7 @@ public class CatalogController : Controller
         context.SaveChanges();
     }
     
+    
     [HttpGet]
     public IActionResult DisplayBookList()
     {
@@ -178,5 +179,5 @@ public class CatalogController : Controller
     {
         return View(modelToSort);
     }*/
-
+    
 }
