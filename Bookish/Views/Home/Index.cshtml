@@ -17,6 +17,7 @@
             @Html.TextBoxFor(m => m.Publisher, new{@type="text", placeholder="Publisher"})
             @Html.TextBoxFor(m => m.DatePublished, new{@type="date", placeholder="Publish date"})
             @Html.TextBoxFor(m => m.Author, new{@type="text", placeholder="Author", pattern="^[A-Za-z ,.'-]+$" })
+            @Html.TextBoxFor(m => m.NewCopies, new{@type="number", placeholder="copies"})
             <input type="submit" value="Enter book info" />
 
         </fieldset>
