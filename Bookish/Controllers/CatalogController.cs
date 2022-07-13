@@ -20,7 +20,11 @@ public class CatalogController : Controller
         string isbn = model.BookInput.ISBN;
         string publisher = model.BookInput.Publisher;
         DateTime datePublished = model.BookInput.DatePublished;
-        string[] authorNames = model.BookInput.Author.Split(" ");
+        string[] authorNames = model.BookInput.Author.Split(" ", 2);
+        if (authorNames.Length == 1)
+        {
+            authorNames = new [] { authorNames[0], "" };
+        }
         int newCopies = model.BookInput.NewCopies;
         using (var context = new LibraryContext())
         {
