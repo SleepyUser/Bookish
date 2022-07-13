@@ -4,7 +4,7 @@
 
 @model BookOrBorrowerInputModel
 <div class="text-center">
-<h1 class="display-4">Bookish</h1>
+    <h1 class="display-4">Bookish</h1>
     <p>Learn about how this fish looks: <a href="https://d1o50x50snmhul.cloudfront.net/wp-content/uploads/2017/03/29155112/df8f8x.jpg">Here is a picture of a fish</a>.</p>
 </div>    
 
@@ -54,7 +54,7 @@
 </div>
 <div id="Enter a User" class="tabcontent" style="display:none;">
     @using (Html.BeginForm("AddNewBorrower", "Catalog", FormMethod.Post))
-     {
+    {
          <fieldset>
              <legend>Enter a user:</legend>
              <table class="table table-hover table-sm">
