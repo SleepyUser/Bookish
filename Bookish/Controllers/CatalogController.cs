@@ -13,20 +13,20 @@ public class CatalogController : Controller
         _logger = logger;
     }
     
-    // GET
-    public IActionResult BookEntry(BookInputModel model)
+    // [HttpPost]
+    public IActionResult AddNewBook(BookOrBorrowerInputModel model)
     {
-        string bookName = model.BookName;
-        string isbn = model.ISBN;
-        string publisher = model.Publisher;
-        DateTime datePublished = model.DatePublished;
-        string[] authorNames = model.Author.Split(" ", 2);
+        string bookName = model.BookInput.BookName;
+        string isbn = model.BookInput.ISBN;
+        string publisher = model.BookInput.Publisher;
+        DateTime datePublished = model.BookInput.DatePublished;
+        string[] authorNames = model.BookInput.Author.Split(" ", 2);
         if (authorNames.Length == 1)
         {
             authorNames = new string[] { authorNames[0], "" };
         }
-        
-        int newCopies = model.NewCopies;
+
+        int newCopies = model.BookInput.NewCopies;
         using (var context = new LibraryContext())
         {
             Book? foundBook = context.Books.SingleOrDefault(a =>
@@ -38,16 +38,7 @@ public class CatalogController : Controller
                 a.Author.AuthorForename == authorNames[0]);
             if (foundBook != null)
             {
-                for (int i = 0; i < newCopies; i++)
-                {
-                    var copy = new Copy()
-                    {
-                        BookID = foundBook.BookID,
-                        Comments = "This is a comment",
-                    };
-                    context.Copies.Add(copy);
-                    context.SaveChanges();
-                }
+                AddCopiesOfBook(newCopies, context, foundBook);
             }
             else
             {
@@ -68,13 +59,13 @@ public class CatalogController : Controller
                 };
                 context.Books.Add(book);
                 context.SaveChanges();
-                AddXCopies(newCopies, context, book);
+                AddCopiesOfBook(newCopies, context, book);
             }
         }
         return View();
     }
     
-    public IActionResult BorrowerEntry(DefaultInputModel model)
+    public IActionResult AddNewBorrower(BookOrBorrowerInputModel model)
     {
         string surname = model.BorrowerInput.Surname;
         string forename = model.BorrowerInput.Forename;
@@ -101,8 +92,9 @@ public class CatalogController : Controller
         return View();
     }
 
-    public void AddXCopies(int newCopies, LibraryContext context, Book book)
+    public void AddCopiesOfBook(int newCopies, LibraryContext context, Book book)
     {
+        List<Copy> newCopyList = new List<Copy>();
         for (int i = 0; i < newCopies; i++)
         {
             var copy = new Copy()
@@ -110,9 +102,10 @@ public class CatalogController : Controller
                 BookID = book.BookID,
                 Comments = "This is a comment"
             };
-            context.Copies.Add(copy);
-            context.SaveChanges();
+            newCopyList.Add(copy);
         }
+        context.Copies.AddRange(newCopyList);
+        context.SaveChanges();
     }
     
     public IActionResult BookList()
@@ -121,7 +114,8 @@ public class CatalogController : Controller
         using (var context = new LibraryContext())
         {
             bvm.CatalogEntries = context.Books.Include(b => b.Author)
-                .Include(b => b.CopyList).ToList();
+                .Include(b => b.CopyList)
+                .ToList();
         }
         return View(bvm);
     }
@@ -139,5 +133,5 @@ public class CatalogController : Controller
     {
         return View(modelToSort);
     }*/
-    
+
 }

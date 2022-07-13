@@ -1,6 +1,6 @@
 ﻿namespace Bookish.Models;
 
-public class DefaultInputModel
+public class BookOrBorrowerInputModel
 {
     public BookInputModel BookInput { get; set; }
     public BorrowerInputModel BorrowerInput { get; set; }
