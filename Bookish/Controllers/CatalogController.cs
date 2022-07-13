@@ -62,7 +62,7 @@ public class CatalogController : Controller
                     AuthorSurname = authorSurname,
                     AuthorForename = authorForename,
                 };
-                Author? foundAuthor = context.Authors.SingleOrDefault(a =>
+                foundAuthor = context.Authors.SingleOrDefault(a =>
                     a.AuthorForename == author.AuthorForename && a.AuthorSurname == author.AuthorSurname);
                 if (foundAuthor != null)
                 {
