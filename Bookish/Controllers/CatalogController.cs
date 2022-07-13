@@ -142,6 +142,8 @@ public class CatalogController : Controller
         using (var context = new LibraryContext())
         {
             bvm.CatalogEntries = context.Books.Include(b => b.Author)
+                .Include(b => b.CopyList).ToList();
+            bvm.CatalogEntries = context.Books.Include(b => b.Author)
                 .Include(c => c.CopyList)
                 .ToList();
         }
