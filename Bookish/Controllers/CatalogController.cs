@@ -132,6 +132,17 @@ public class CatalogController : Controller
         }
         return View(bvm);
     }
+    
+    public IActionResult BorrowerList()
+    {
+        BorrowerViewModel bvm = new BorrowerViewModel();
+        using (var context = new LibraryContext())
+        {
+            bvm.EntryQuery = context.Borrowers.Include(b => b.CopyList).Include(b => b.BorrowList);
+            bvm.CatalogEntries = bvm.EntryQuery.ToList();
+        }
+        return View(bvm);
+    }
 
     /*public IActionResult SortList(BookViewModel modelToSort)
     {
