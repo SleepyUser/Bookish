@@ -2,9 +2,9 @@
     ViewData["Title"] = "Home Page";
 }
 
-@model DefaultInputModel
+@model BookOrBorrowerInputModel
 <div class="text-center">
-    <h1 class="display-4">Bookish</h1>
+<h1 class="display-4">Bookish</h1>
     <p>Learn about how this fish looks: <a href="https://d1o50x50snmhul.cloudfront.net/wp-content/uploads/2017/03/29155112/df8f8x.jpg">Here is a picture of a fish</a>.</p>
 </div>    
 
@@ -12,10 +12,11 @@
     <button class="tablinks" onclick="openTab(event, 'Enter a Book')">Enter a Book</button>
     <button class="tablinks" onclick="openTab(event, 'Enter a User')">Enter a User</button>
 </div>
-    
+
 <div id="Enter a Book" class="tabcontent">
-    @using (Html.BeginForm("BookEntry", "Catalog", FormMethod.Get))
+    @using (Html.BeginForm("AddNewBook", "Catalog", FormMethod.Post))
     {
+        
         <fieldset>
             <legend>Enter a book:</legend>
             <table class="table table-hover table-sm">
@@ -51,30 +52,28 @@
         </fieldset>
     }
 </div>
-
 <div id="Enter a User" class="tabcontent" style="display:none;">
-    @using (Html.BeginForm("BorrowerEntry", "Catalog", FormMethod.Get))
-    {
-        <fieldset>
-            <legend>Enter a user:</legend>
-            <table class="table table-hover table-sm">
-
-                <tbody>
-                    <tr>
-                        <td><b>User phone number : </b></td>
-                        <td>@Html.TextBoxFor(m => m.BorrowerInput.PhoneNumber, new{@type="text", placeholder="Phone number", pattern="^[\\+]?[(]?[0-9]{3}[)]?[-\\s\\.]?[0-9]{3}[-\\s\\.]?[0-9]{4,6}$", title = "Please enter a phone number"})</td>
-                    </tr>
-                    <tr>
-                        <td><b>User first name : </b></td>
-                        <td>@Html.TextBoxFor(m => m.BorrowerInput.Forename, new{@type="text", placeholder="Forename", pattern="^[A-Za-z ,.'-]+$" })</td>
-                    </tr>
-                    <tr>
-                        <td><b>User surname : </b></td>
-                        <td>@Html.TextBoxFor(m => m.BorrowerInput.Surname, new{@type="text", placeholder="Surname", pattern="^[A-Za-z ,.'-]+$" })</td>
-                    </tr>
-                </tbody>
-            </table>
-        </fieldset>
-    }
+    @using (Html.BeginForm("AddNewBorrower", "Catalog", FormMethod.Post))
+     {
+         <fieldset>
+             <legend>Enter a user:</legend>
+             <table class="table table-hover table-sm">
+ 
+                 <tbody>
+                     <tr>
+                         <td><b>User phone number : </b></td>
+                         <td>@Html.TextBoxFor(m => m.BorrowerInput.PhoneNumber, new{@type="text", placeholder="Phone number", pattern="^[\\+]?[(]?[0-9]{3}[)]?[-\\s\\.]?[0-9]{3}[-\\s\\.]?[0-9]{4,6}$", title = "Please enter a phone number"})</td>
+                     </tr>
+                     <tr>
+                         <td><b>User first name : </b></td>
+                         <td>@Html.TextBoxFor(m => m.BorrowerInput.Forename, new{@type="text", placeholder="Forename", pattern="^[A-Za-z ,.'-]+$" })</td>
+                     </tr>
+                     <tr>
+                         <td><b>User surname : </b></td>
+                         <td>@Html.TextBoxFor(m => m.BorrowerInput.Surname, new{@type="text", placeholder="Surname", pattern="^[A-Za-z ,.'-]+$" })</td>
+                     </tr>
+                 </tbody>
+             </table>
+         </fieldset>
+     }
 </div>
-
