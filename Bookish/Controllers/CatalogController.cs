@@ -25,7 +25,7 @@ public class CatalogController : Controller
         {
             authorNames = new string[] { authorNames[0], "" };
         }
-        
+
         int newCopies = model.BookInput.NewCopies;
         using (var context = new LibraryContext())
         {
@@ -92,7 +92,7 @@ public class CatalogController : Controller
         return View();
     }
     
-    public IActionResult BorrowerEntry(DefaultInputModel model)
+    public IActionResult AddNewBorrower(BookOrBorrowerInputModel model)
     {
         string surname = model.BorrowerInput.Surname;
         string forename = model.BorrowerInput.Forename;
@@ -161,5 +161,5 @@ public class CatalogController : Controller
     {
         return View(modelToSort);
     }*/
-    
+
 }
