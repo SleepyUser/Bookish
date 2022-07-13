@@ -16,7 +16,6 @@ public class CatalogController : Controller
     // GET
     public IActionResult BookEntry(BookInputModel model)
     {
-        Book foundBook = new Book();
         string bookName = model.BookName;
         string isbn = model.ISBN;
         string publisher = model.Publisher;
@@ -30,7 +29,13 @@ public class CatalogController : Controller
         int newCopies = model.NewCopies;
         using (var context = new LibraryContext())
         {
-            foundBook = context.Books.SingleOrDefault(a => a.ISBN == isbn);
+            Book? foundBook = context.Books.SingleOrDefault(a =>
+                a.ISBN == isbn &&
+                a.Title == bookName &&
+                a.Publisher == publisher &&
+                a.DatePublished == datePublished &&
+                a.Author.AuthorSurname == authorNames[1] &&
+                a.Author.AuthorForename == authorNames[0]);
             if (foundBook != null)
             {
                 for (int i = 0; i < newCopies; i++)
