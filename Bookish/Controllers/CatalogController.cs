@@ -31,12 +31,28 @@ public class CatalogController : Controller
                 a.DatePublished == datePublished &&
                 a.Author.AuthorSurname == authorNames[1] &&
                 a.Author.AuthorForename == authorNames[0]);
+            Author? foundAuthor = context.Authors.SingleOrDefault(a =>
+                a.AuthorForename == authorNames[0] &&
+                a.AuthorSurname == authorNames[1]);
             if (foundBook != null)
             {
                 AddXCopies(newCopies, context, foundBook);
             }
-            else
+            else if (foundAuthor != null)
             {
+                var book = new Book()
+                {
+                    ISBN = isbn,
+                    Title = bookName,
+                    Publisher = publisher,
+                    AuthorID = foundAuthor.AuthorID,
+                    DatePublished = datePublished
+                };
+                context.Books.Add(book);
+                context.SaveChanges();
+                AddXCopies(newCopies, context, book);
+            }
+            else{
                 var author = new Author()
                 {
                     AuthorSurname = authorNames[1],
