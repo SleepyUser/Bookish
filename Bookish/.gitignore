@@ -6,7 +6,7 @@ project.lock.json
 nupkg/
 
 #API Keys
-Keys.cs
+*/Keys.cs
 
 # Visual Studio Code
 .vscode
