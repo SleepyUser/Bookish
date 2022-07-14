@@ -152,7 +152,6 @@ public class CatalogController : Controller
         context.SaveChanges();
     }
     
-    
     [HttpGet]
     public IActionResult DisplayBookList()
     {
@@ -192,15 +191,35 @@ public class CatalogController : Controller
         }
         return View(cvm);
     }
-
+    
+    [HttpPost]
     public IActionResult EditBook(BookViewModel bvm)
     {
-        return View("BookList", bvm);
+        switch (operation)
+        {
+            case "delete":
+                throw new Exception("HELP DELETE");
+                return Delete(new BookViewModel());
+                break;
+            case "edit":
+                throw new Exception("HELP EDIT");
+                return Edit(new BookViewModel());
+                break;
+            default:
+                return View("Error");
+        }
     }
 
-    public IActionResult DeleteBook(BookViewModel bvm)
+    [HttpPost]
+    public IActionResult Delete(BookViewModel bvm)
     {
-        return View("BookList", bvm);
+        return View("Index", bvm.CatalogEntries[0]);
+    }
+    [HttpPost]
+    public IActionResult Edit(BookViewModel bvm)
+    {
+
+        return View("Index", bvm.CatalogEntries[0]);
     }
     /*public IActionResult SortList(BookViewModel modelToSort)
     {
