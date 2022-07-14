@@ -1,0 +1,33 @@
+﻿@model Bookish.Models.Book
+
+@{
+    ViewBag.Title = "Update Book";
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>Edit Book</title>
+</head>
+<body>
+<div>
+    @using (Html.BeginForm("Edit", "Catalog", FormMethod.Post))
+    {
+        <fieldset>
+            <legend>Enter a book:</legend>
+            
+            @Html.HiddenFor(m=>m.BookID, new{value=Model.BookID})
+            @Html.HiddenFor(m=>m.AuthorID, new{value=Model.AuthorID})
+            @Html.TextBoxFor(m => m.Title, new{@type="text", placeholder="Title", Value = Model.Title})
+            @Html.TextBoxFor(m => m.ISBN, new{@type="text", placeholder="ISBN", pattern="[0-9]{13}", title = "Please enter a 13 digit number", value=Model.ISBN})
+            @Html.TextBoxFor(m => m.Publisher, new{@type="text", placeholder="Publisher", value=Model.Publisher})
+            @Html.TextBoxFor(m => m.DatePublished, "{0:yyyy-MM-dd}", new {@type="date", placeholder="Publish date", value=Model.DatePublished.ToString("yyyy-MM-dd")})
+            @Html.TextBoxFor(m => m.Author.AuthorForename, new{@type="text", placeholder="Author", pattern="^[A-Za-z ,.'-]+$" , value=Model.Author.AuthorForename})
+            @Html.TextBoxFor(m => m.Author.AuthorSurname, new{@type="text", placeholder="Author", pattern="^[A-Za-z ,.'-]+$" , value=Model.Author.AuthorSurname})
+            <input type="submit" value="Update book info" />
+        </fieldset>
+    }
+</div>
+</body>
+</html>
