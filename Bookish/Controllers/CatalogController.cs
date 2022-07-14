@@ -114,6 +114,18 @@ public class CatalogController : Controller
         }
         return View(bvm);
     }
+    
+    public IActionResult CopyList(int inputId)
+    {
+        CopyViewModel cvm = new CopyViewModel();
+        using (var context = new LibraryContext())
+        {
+            cvm.CatalogEntries = context.Copies.Include(b => b.BorrowInstanceList)
+                .Where(b => b.BookID == inputId)
+                .ToList();
+        }
+        return View(cvm);
+    }
 
     /*public IActionResult SortList(BookViewModel modelToSort)
     {
