@@ -11,6 +11,9 @@ nupkg/
 # Rider
 .idea
 
+#Keys
+*/Keys
+
 # User-specific files
 *.suo
 *.user
