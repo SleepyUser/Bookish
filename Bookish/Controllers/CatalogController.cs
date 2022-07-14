@@ -194,6 +194,8 @@ public class CatalogController : Controller
     
     [HttpPost]
     public IActionResult EditBook(BookViewModel bvm)
+    /*[HttpPost]
+    public IActionResult BookList(int bookId, string operation)
     {
         switch (operation)
         {
@@ -208,18 +210,81 @@ public class CatalogController : Controller
             default:
                 return View("Error");
         }
+    }*/
+    [HttpGet]
+    public IActionResult Delete(int bookId)
+    {
+
+        Book? foundBook;
+        using (var context = new LibraryContext())
+        {
+            foundBook = context.Books.SingleOrDefault(a => a.BookID == bookId );
+            if (foundBook == null)
+            {
+                throw new Exception("NO BOOK!");
+            }
+            else
+            {
+                context.Remove(foundBook);
+                context.SaveChanges();
+            }
+        }
+
+        return DisplayBookList();
+    }
+    [HttpGet]
+    public IActionResult Edit(int bookId)
+    {
+        Book? foundBook;
+        using (var context = new LibraryContext())
+        {
+            foundBook = context.Books.SingleOrDefault(a => a.BookID == bookId);
+            foundBook.Author = context.Authors.SingleOrDefault(a => a.AuthorID == foundBook.AuthorID);
+            if (foundBook == null)
+            {
+                throw new Exception("NO BOOK!");
+            }
+        }
+        return View(foundBook);
     }
 
     [HttpPost]
-    public IActionResult Delete(BookViewModel bvm)
+    public IActionResult Edit(Book b)
     {
-        return View("Index", bvm.CatalogEntries[0]);
-    }
-    [HttpPost]
-    public IActionResult Edit(BookViewModel bvm)
-    {
-
-        return View("Index", bvm.CatalogEntries[0]);
+        using (var context = new LibraryContext())
+        {
+            Book? foundBook = context.Books.SingleOrDefault(a => a.BookID == b.BookID);
+            Author? foundAuthor = context.Authors.SingleOrDefault(a =>
+                a.AuthorForename == b.Author.AuthorForename && a.AuthorSurname == b.Author.AuthorSurname);
+            if (foundBook == null)
+            {
+                //error stuff
+            }
+            else
+            {
+                if (foundAuthor == null)
+                {
+                    foundAuthor = new Author()
+                        { AuthorForename = b.Author.AuthorForename, AuthorSurname = b.Author.AuthorSurname };
+                    
+                    context.Authors.Add(foundAuthor);
+                    context.SaveChanges();
+                }
+                b.Author = foundAuthor;
+                Book _b = context.Books.Where(s => s.BookID == b.BookID).FirstOrDefault<Book>();
+                if (_b != null)
+                {
+                    _b.Title = b.Title;
+                    _b.Author = foundAuthor;
+                    _b.Publisher = b.Publisher;
+                    _b.DatePublished = b.DatePublished;
+                    _b.ISBN = b.ISBN;
+                    context.Update(_b);
+                    context.SaveChanges();
+                }
+            }
+        }
+        return DisplayBookList();
     }
     /*public IActionResult SortList(BookViewModel modelToSort)
     {
