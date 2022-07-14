@@ -150,4 +150,9 @@ public class CatalogController : Controller
         return View(bvm);
     }
 
+    /*public IActionResult SortList(BookViewModel modelToSort)
+    {
+        return View(modelToSort);
+    }*/
+
 }
