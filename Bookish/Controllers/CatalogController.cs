@@ -18,20 +18,22 @@ public class CatalogController : Controller
     {
         string bookName = model.BookInput.BookName;
         string isbn = model.BookInput.ISBN;
-        string publisher = (model.BookInput.Publisher == null) ? "" : model.BookInput.Publisher;
+        string publisher = model.BookInput.Publisher ?? "";
         DateTime datePublished = model.BookInput.DatePublished;
-        string authorForename = (model.BookInput.AuthorForename == null) ? "" : model.BookInput.AuthorForename;
-        string authorSurname = (model.BookInput.AuthorSurname == null) ? "" : model.BookInput.AuthorSurname;
+        string authorForename = model.BookInput.AuthorForename ?? "";
+        string authorSurname = model.BookInput.AuthorSurname ?? "";
         int newCopies = model.BookInput.NewCopies;
+        
         using (var context = new LibraryContext())
         {
-            Book? foundBook = context.Books.SingleOrDefault(a =>
-                a.ISBN == isbn &&
-                a.Title == bookName &&
-                a.Publisher == publisher &&
-                a.DatePublished == datePublished &&
-                a.Author.AuthorSurname == authorSurname &&
-                a.Author.AuthorForename == authorForename);
+            Book? foundBook = context.Books.SingleOrDefault(b =>
+                b.ISBN == isbn &&
+                b.Title == bookName &&
+                b.Publisher == publisher &&
+                b.DatePublished == datePublished &&
+                b.Author.AuthorSurname == authorSurname &&
+                b.Author.AuthorForename == authorForename);
+            
             Author? foundAuthor = context.Authors.SingleOrDefault(a =>
                 a.AuthorForename == authorForename &&
                 a.AuthorSurname == authorSurname);
@@ -53,7 +55,8 @@ public class CatalogController : Controller
                 context.SaveChanges();
                 AddCopiesOfBook(newCopies, context, book);
             }
-            else{
+            else
+            {
                 var author = new Author()
                 {
                     AuthorSurname = authorSurname,
@@ -61,6 +64,7 @@ public class CatalogController : Controller
                 };
                 context.Authors.Add(author);
                 context.SaveChanges();
+                
                 var book = new Book()
                 {
                     ISBN = isbn,
@@ -120,25 +124,28 @@ public class CatalogController : Controller
         context.SaveChanges();
     }
     
-    public IActionResult BookList()
+    [HttpGet]
+    public IActionResult DisplayBookList()
     {
         BookViewModel bvm = new BookViewModel();
         using (var context = new LibraryContext())
         {
             bvm.CatalogEntries = context.Books.Include(b => b.Author)
-                .Include(b => b.CopyList)
+                .Include(c => c.CopyList)
                 .ToList();
         }
         return View(bvm);
     }
     
-    public IActionResult BorrowerList()
+    [HttpGet]
+    public IActionResult DisplayBorrowerList()
     {
         BorrowerViewModel bvm = new BorrowerViewModel();
         using (var context = new LibraryContext())
         {
-            bvm.EntryQuery = context.Borrowers.Include(b => b.CopyList).Include(b => b.BorrowList);
-            bvm.CatalogEntries = bvm.EntryQuery.ToList();
+            bvm.CatalogEntries = context.Borrowers.Include(b => b.CopyList)
+                .Include(c => c.BorrowList)
+                .ToList();
         }
         return View(bvm);
     }

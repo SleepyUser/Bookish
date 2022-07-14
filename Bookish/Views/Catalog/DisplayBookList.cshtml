@@ -1,0 +1,61 @@
+﻿@using Microsoft.EntityFrameworkCore.Metadata.Internal
+@model Bookish.Models.BookViewModel
+
+@{
+    ViewBag.Title = "Book List";
+}
+
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.3/font/bootstrap-icons.css">
+        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.css">
+        <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.js"></script>
+
+        <title>Book List</title>
+    </head>
+    <body>
+        <div>
+            <table class="display" id="TableOfBooks">
+                <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Author Name</th>
+                    <th>Publisher</th>
+                    <th>ISBN</th>
+                    <th>Date Published</th>
+                    <th>Copies</th>
+                    <th></th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                @foreach (Book b in Model.CatalogEntries)
+                {
+                    <tr>
+                        <td>@b.Title</td>
+                        <td>
+                            @b.Author.AuthorSurname
+                            @((b.Author.AuthorSurname != "") ? "," : "")
+                            @b.Author.AuthorForename
+                        </td>
+                        <td>@b.Publisher</td>
+                        <td>@b.ISBN</td>
+                        <td>@b.DatePublished</td>
+                        <td>@b.CopyList.Count</td>
+                        <td><button class="btn-outline-info"><i class="bi bi-pencil"></i></button></td>
+                        <td><button class="btn-outline-danger"><i class="bi bi-trash"></i></button></td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </div>
+    </body>
+    <script>
+        $(document).ready( function () {
+            $('#myTable').DataTable();
+        } );
+    </script>
+</html>

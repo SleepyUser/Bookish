@@ -6,5 +6,4 @@ namespace Bookish.Models;
 public class BorrowerViewModel
 {
     public List<Borrower> CatalogEntries;
-    public IQueryable<Borrower> EntryQuery;
 }
