@@ -159,7 +159,7 @@ public class CatalogController : Controller
         }
         return View(bvm);
     }
-    
+
     [HttpGet]
     public IActionResult GetCopyList(int bookInputId)
     {
