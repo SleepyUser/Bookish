@@ -23,27 +23,31 @@
                 <tbody>
                     <tr>
                         <td><b>Book title : </b></td>
-                        <td>@Html.TextBoxFor(m => m.BookInput.BookName, new { @type = "text", placeholder = "Book name" })</td>
+                        <td>@Html.TextBoxFor(m => m.BookInput.BookName, new { @type = "text", placeholder = "Book name", required = "required"})</td>
                     </tr>
                     <tr>
                         <td><b>Book ISBN: </b></td>
-                        <td>@Html.TextBoxFor(m => m.BookInput.ISBN, new { @type = "text", placeholder = "ISBN", pattern = "[0-9]{13}", title = "Please enter a 13 digit number" })</td>
+                        <td>@Html.TextBoxFor(m => m.BookInput.ISBN, new { @type = "text", placeholder = "ISBN", pattern = "[0-9]{13}", title = "Please enter a 13 digit number", required = "required" })</td>
                     </tr>
                     <tr>
                         <td><b>Book publisher : </b></td>
-                        <td>@Html.TextBoxFor(m => m.BookInput.Publisher, new { @type = "text", placeholder = "Publisher" })</td>
+                        <td>@Html.TextBoxFor(m => m.BookInput.Publisher, new { @type = "text", placeholder = "Publisher"})</td>
                     </tr>
                     <tr>
                         <td><b>Book publish date : </b></td>
-                        <td>@Html.TextBoxFor(m => m.BookInput.DatePublished, new { @type = "date", placeholder = "Publish date" })</td>
+                        <td>@Html.TextBoxFor(m => m.BookInput.DatePublished, new { @type = "date", placeholder = "Publish date", required = "required" })</td>
                     </tr>
                     <tr>
-                        <td><b>Book author : </b></td>
-                        <td>@Html.TextBoxFor(m => m.BookInput.Author, new { @type = "text", placeholder = "Author", pattern = "^[A-Za-z ,.'-]+$" })</td>
+                        <td><b>Book author forename : </b></td>
+                        <td>@Html.TextBoxFor(m => m.BookInput.AuthorForename, new { @type = "text", placeholder = "Forename", pattern = "^[A-Za-z ,.'-]+$"})</td>
+                    </tr>
+                    <tr>
+                        <td><b>Book author surname : </b></td>
+                        <td>@Html.TextBoxFor(m => m.BookInput.AuthorSurname, new { @type = "text", placeholder = "Surname", pattern = "^[A-Za-z ,.'-]+$" })</td>
                     </tr>
                     <tr>
                         <td><b>Number of copies : </b></td>
-                        <td>@Html.TextBoxFor(m => m.BookInput.NewCopies, new { @type = "number", placeholder = "copies" })</td>
+                        <td>@Html.TextBoxFor(m => m.BookInput.NewCopies, new { @type = "number", placeholder = "copies", required = "required" })</td>
                     </tr>
                 </tbody>
             </table>
@@ -59,18 +63,18 @@
             <table class="table table-hover table-sm">
 
                 <tbody>
-                <tr>
-                    <td><b>User phone number : </b></td>
-                    <td>@Html.TextBoxFor(m => m.BorrowerInput.PhoneNumber, new{@type="text", placeholder="Phone number", pattern="^[\\+]?[(]?[0-9]{3}[)]?[-\\s\\.]?[0-9]{3}[-\\s\\.]?[0-9]{4,6}$", title = "Please enter a phone number"})</td>
-                </tr>
-                <tr>
-                    <td><b>User first name : </b></td>
-                    <td>@Html.TextBoxFor(m => m.BorrowerInput.Forename, new{@type="text", placeholder="Forename", pattern="^[A-Za-z ,.'-]+$" })</td>
-                </tr>
-                <tr>
-                    <td><b>User surname : </b></td>
-                    <td>@Html.TextBoxFor(m => m.BorrowerInput.Surname, new{@type="text", placeholder="Surname", pattern="^[A-Za-z ,.'-]+$" })</td>
-                </tr>
+                    <tr>
+                        <td><b>User phone number : </b></td>
+                        <td>@Html.TextBoxFor(m => m.BorrowerInput.PhoneNumber, new{@type="text", placeholder="Phone number", pattern="^[\\+]?[(]?[0-9]{3}[)]?[-\\s\\.]?[0-9]{3}[-\\s\\.]?[0-9]{4,6}$", title = "Please enter a phone number", required = "required"})</td>
+                    </tr>
+                    <tr>
+                        <td><b>User first name : </b></td>
+                        <td>@Html.TextBoxFor(m => m.BorrowerInput.Forename, new{@type="text", placeholder="Forename", pattern="^[A-Za-z ,.'-]+$", required = "required" })</td>
+                    </tr>
+                    <tr>
+                        <td><b>User surname : </b></td>
+                        <td>@Html.TextBoxFor(m => m.BorrowerInput.Surname, new{@type="text", placeholder="Surname", pattern="^[A-Za-z ,.'-]+$", required = "required" })</td>
+                    </tr>
                 </tbody>
             </table>
             <br/><input type="submit" value="Enter user info"/>

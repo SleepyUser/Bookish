@@ -18,13 +18,10 @@ public class CatalogController : Controller
     {
         string bookName = model.BookInput.BookName;
         string isbn = model.BookInput.ISBN;
-        string publisher = model.BookInput.Publisher;
+        string publisher = (model.BookInput.Publisher == null) ? "" : model.BookInput.Publisher;
         DateTime datePublished = model.BookInput.DatePublished;
-        string[] authorNames = model.BookInput.Author.Split(" ", 2);
-        if (authorNames.Length == 1)
-        {
-            authorNames = new [] { authorNames[0], "" };
-        }
+        string authorForename = (model.BookInput.AuthorForename == null) ? "" : model.BookInput.AuthorForename;
+        string authorSurname = (model.BookInput.AuthorSurname == null) ? "" : model.BookInput.AuthorSurname;
         int newCopies = model.BookInput.NewCopies;
         using (var context = new LibraryContext())
         {
@@ -33,11 +30,11 @@ public class CatalogController : Controller
                 a.Title == bookName &&
                 a.Publisher == publisher &&
                 a.DatePublished == datePublished &&
-                a.Author.AuthorSurname == authorNames[1] &&
-                a.Author.AuthorForename == authorNames[0]);
+                a.Author.AuthorSurname == authorSurname &&
+                a.Author.AuthorForename == authorForename);
             Author? foundAuthor = context.Authors.SingleOrDefault(a =>
-                a.AuthorForename == authorNames[0] &&
-                a.AuthorSurname == authorNames[1]);
+                a.AuthorForename == authorForename &&
+                a.AuthorSurname == authorSurname);
             if (foundBook != null)
             {
                 AddCopiesOfBook(newCopies, context, foundBook);
@@ -59,8 +56,8 @@ public class CatalogController : Controller
             else{
                 var author = new Author()
                 {
-                    AuthorSurname = authorNames[1],
-                    AuthorForename = authorNames[0],
+                    AuthorSurname = authorSurname,
+                    AuthorForename = authorForename,
                 };
                 context.Authors.Add(author);
                 context.SaveChanges();
@@ -145,10 +142,5 @@ public class CatalogController : Controller
         }
         return View(bvm);
     }
-
-    /*public IActionResult SortList(BookViewModel modelToSort)
-    {
-        return View(modelToSort);
-    }*/
 
 }
