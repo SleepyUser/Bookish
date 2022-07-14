@@ -54,7 +54,7 @@ public class CatalogController : Controller
                 };
                 context.Books.Add(book);
                 context.SaveChanges();
-                AddXCopies(newCopies, context, book);
+                AddCopiesOfBook(newCopies, context, book);
             }
             else{
                 var author = new Author()
