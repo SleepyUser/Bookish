@@ -157,7 +157,7 @@ public class CatalogController : Controller
                 .Include(c => c.BorrowList)
                 .ToList();
         }
-        return View(bvm);
+        return View("DisplayBookList", bvm);
     }
 
     [HttpGet]
@@ -181,10 +181,10 @@ public class CatalogController : Controller
         Book? foundBook;
         using (var context = new LibraryContext())
         {
-            foundBook = context.Books.SingleOrDefault(a => a.BookID == bookId);
+            foundBook = context.Books.SingleOrDefault(a => a.BookID == bookId );
             if (foundBook == null)
             {
-                //Do Nothing
+                throw new Exception("NO BOOK!");
             }
             else
             {
@@ -196,6 +196,7 @@ public class CatalogController : Controller
         return RedirectToAction("DisplayBookList");
     }
 
+
     [HttpGet]
     public IActionResult Edit(int bookId)
     {
@@ -205,9 +206,13 @@ public class CatalogController : Controller
             foundBook = context.Books.SingleOrDefault(a => a.BookID == bookId);
             if (foundBook == null)
             {
+                //error stuff
                 throw new Exception("NO BOOK!");
             }
-            foundBook.Author = context.Authors.SingleOrDefault(a => a.AuthorID == foundBook.AuthorID);
+            else
+            {
+                foundBook.Author = context.Authors.SingleOrDefault(a => a.AuthorID == foundBook.AuthorID);
+            }
         }
         return View(foundBook);
     }
