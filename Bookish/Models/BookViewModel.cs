@@ -6,4 +6,5 @@ namespace Bookish.Models;
 public class BookViewModel
 {
     public List<Book> CatalogEntries;
+    public int BookId;
 }
