@@ -44,9 +44,9 @@
             {
                 <tr>
                     <td>@c.Comments</td>
-                    <td>@c.BorrowInstanceList.Last().Borrower.Surname, @c.BorrowInstanceList.Last().Borrower.Forename</td>
-                    <td>@c.BorrowInstanceList.Last().BorrowDate</td>
-                    <td>@c.BorrowInstanceList.Last().ReturnDate</td>
+                    <td>@((c.BorrowInstanceList.Count != 0) ? c.BorrowInstanceList.Last().Borrower.Surname +","+ @c.BorrowInstanceList.Last().Borrower.Forename  : "")</td>
+                    <td>@((c.BorrowInstanceList.Count != 0) ? c.BorrowInstanceList.Last().BorrowDate: "")</td>
+                    <td>@((c.BorrowInstanceList.Count != 0) ? c.BorrowInstanceList.Last().ReturnDate: "")</td>
                     <td><button class="btn-outline-info"><i class="bi bi-pencil"></i></button></td>
                     <td><button class="btn-outline-danger"><i class="bi bi-trash"></i></button></td>
                 </tr>
