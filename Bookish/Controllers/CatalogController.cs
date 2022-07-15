@@ -160,7 +160,7 @@ public class CatalogController : Controller
                 .Include(c => c.BorrowList)
                 .ToList();
         }
-        return View("DisplayBookList", bvm);
+        return View(bvm);
     }
 
     [HttpGet]
