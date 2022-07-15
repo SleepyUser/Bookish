@@ -60,6 +60,7 @@ public class CatalogController : Controller
         return View();
     }
     
+    [HttpPost]
     public IActionResult AddNewBorrower(BookOrBorrowerInputModel model)
     {
         string surname = model.BorrowerInput.Surname;
@@ -103,6 +104,7 @@ public class CatalogController : Controller
         context.SaveChanges();
     }
     
+    [HttpGet]
     public IActionResult BookList()
     {
         BookViewModel bvm = new BookViewModel();
