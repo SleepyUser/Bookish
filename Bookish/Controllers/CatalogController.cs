@@ -81,6 +81,7 @@ public class CatalogController : Controller
         return View();
     }
     
+    [HttpPost]
     public IActionResult AddNewBorrower(BookOrBorrowerInputModel model)
     {
         string surname = model.BorrowerInput.Surname;
