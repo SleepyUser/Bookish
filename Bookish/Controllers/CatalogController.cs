@@ -118,7 +118,7 @@ public class CatalogController : Controller
     }
     
     [HttpGet]
-    public IActionResult GetCopyList(int inputBookId)
+    public IActionResult GetCopyList(int bookInputId)
     {
         CopyViewModel cvm = new CopyViewModel();
         using (var context = new LibraryContext())
@@ -126,7 +126,7 @@ public class CatalogController : Controller
             cvm.Book = context.Books
                 .Include(b => b.CopyList)
                 .Include(b => b.Author)
-                .Single(b => b.BookID == inputBookId);
+                .Single(b => b.BookID == bookInputId);
         }
         return View(cvm);
     }
