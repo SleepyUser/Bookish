@@ -121,10 +121,12 @@ public class CatalogController : Controller
         CopyViewModel cvm = new CopyViewModel();
         using (var context = new LibraryContext())
         {
-            cvm.CatalogEntries = context.Copies.Include(b => b.BorrowInstanceList).Include(bo => bo.Book)
+            cvm.CatalogEntries = context.Copies.Include(b => b.BorrowInstanceList)
+                .Include(b => b.Book)
                 .Where(b => b.BookID == inputId)
                 .ToList();
-            /*cvm.Author = context.Authors.Where(a => a.AuthorID == context.Books.Single(bo => bo.BookID == inputId).BookID).First();*/
+            cvm.Book = context.Copies.FirstOrDefault(b => b.BookID == inputId).Book;
+            cvm.Author = context.Authors.SingleOrDefault(a => a.AuthorID == cvm.Book.AuthorID);
         }
         return View(cvm);
     }
