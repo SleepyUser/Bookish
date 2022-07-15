@@ -104,35 +104,6 @@ public class CatalogController : Controller
         return View();
     }
     
-    public IActionResult AddNewBorrower(BookOrBorrowerInputModel model)
-    {
-        string surname = model.BorrowerInput.Surname;
-        string forename = model.BorrowerInput.Forename;
-        string phonenumber = model.BorrowerInput.PhoneNumber;
-        using (var context = new LibraryContext())
-        {
-            Borrower? foundBorrower = context.Borrowers.SingleOrDefault(a =>
-                a.Surname == surname &&
-                a.Forename == forename &&
-                a.PhoneNumber == phonenumber);
-            if (foundBorrower != null)
-            {
-                //member already exists, do something
-            }
-            else
-            {
-                var borrower = new Borrower()
-                {
-                    Surname = surname,
-                    Forename = forename,
-                    PhoneNumber = phonenumber
-                };
-                context.Borrowers.Add(borrower);
-                context.SaveChanges();
-            }
-        }
-        return View();
-    }
 
     public void AddCopiesOfBook(int newCopies, LibraryContext context, Book book)
     {
