@@ -84,7 +84,10 @@ public class CatalogController : Controller
         string phonenumber = model.BorrowerInput.PhoneNumber;
         using (var context = new LibraryContext())
         {
-            Borrower? foundBorrower = context.Borrowers.SingleOrDefault(a => a.Surname == surname && a.Forename == forename && a.PhoneNumber == phonenumber );
+            Borrower? foundBorrower = context.Borrowers.SingleOrDefault(a =>
+                a.Surname == surname &&
+                a.Forename == forename &&
+                a.PhoneNumber == phonenumber);
             if (foundBorrower != null)
             {
                 //member already exists, do something
