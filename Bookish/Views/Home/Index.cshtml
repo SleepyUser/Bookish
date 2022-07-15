@@ -1,7 +1,6 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
 }
-
 @model BookOrBorrowerInputModel
 <div class="text-center">
     <h1 class="display-4">Welcome</h1>
@@ -11,16 +10,20 @@
         
         <fieldset>
             <legend>Enter a book:</legend>
-            @Html.TextBoxFor(m => m.BookInput.BookName, new{@type="text", placeholder="Book name"})
-            @Html.TextBoxFor(m => m.BookInput.ISBN, new{@type="text", placeholder="ISBN", pattern="[0-9]{13}", title = "Please enter a 13 digit number"})
-            @Html.TextBoxFor(m => m.BookInput.Publisher, new{@type="text", placeholder="Publisher"})
-            @Html.TextBoxFor(m => m.BookInput.DatePublished, new{@type="date", placeholder="Publish date"})
+            @Html.TextBoxFor(m => m.BookInput.BookName, new { @type = "text", placeholder = "Title", Value =  Model.BookInput.BookName})
+            @Html.TextBoxFor(m => m.BookInput.ISBN, new { @type = "text", placeholder = "ISBN", pattern = "[0-9]{13}", title = "Please enter a 13 digit number", value = Model.BookInput.ISBN})
+            @Html.TextBoxFor(m => m.BookInput.Publisher, new {@type = "text", placeholder = "Publisher", value = Model.BookInput.Publisher})
+            @Html.TextBoxFor(m => m.BookInput.DatePublished, "{0:yyyy-MM-dd}", new { @type = "date", placeholder = "Publish date", value = Model.BookInput.DatePublished.ToString("yyyy-MM-dd") })
             @Html.TextBoxFor(m => m.BookInput.Author, new{@type="text", placeholder="Author", pattern="^[A-Za-z ,.'-]+$" })
             @Html.TextBoxFor(m => m.BookInput.NewCopies, new{@type="number", placeholder="copies"})
             <input type="submit" value="Enter book info" />
+            <input type="submit" value="Retrieve book from ISBN" />
 
         </fieldset>
     }
+    
+    @*Make it so the user can enter their own ISBN*@
+    <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="ISBNEntry" asp-route-isbn="@Model.BookInput.ISBN">ISBN stuff</a>
     
     @using (Html.BeginForm("AddNewBorrower", "Catalog", FormMethod.Post))
         {

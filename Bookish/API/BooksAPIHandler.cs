@@ -35,10 +35,11 @@ public class BooksAPIHandler
       // Deserialize JSON
       var jsonObject = JObject.Parse(responseBody);
       Book book = new Book();
-      var bookInfo = jsonObject["items"]["volumeInfo"];
-      book.Title = bookInfo["Title"].ToString();
+      var bookInfo = jsonObject["items"][0]["volumeInfo"];
+      book.Title = bookInfo["title"].ToString();
       book.ISBN = isbn;
       string[] authname = bookInfo["authors"][0].ToString().Split(" ", 2);
+      book.Author = new Author();
       book.Author.AuthorForename = authname[0];
       if (authname.Length == 2)
          book.Author.AuthorSurname = authname[1];

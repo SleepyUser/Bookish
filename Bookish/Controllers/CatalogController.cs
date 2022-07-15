@@ -1,4 +1,5 @@
-﻿using Bookish.Models;
+﻿using Bookish.API;
+using Bookish.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -16,6 +17,7 @@ public class CatalogController : Controller
     [HttpPost]
     public IActionResult AddNewBook(BookOrBorrowerInputModel model)
     {
+
         string bookName = model.BookInput.BookName;
         string isbn = model.BookInput.ISBN;
         string publisher = model.BookInput.Publisher;
@@ -114,10 +116,18 @@ public class CatalogController : Controller
         }
         return View(bvm);
     }
-
-    /*public IActionResult SortList(BookViewModel modelToSort)
+    
+    [HttpPost]
+    public async Task<IActionResult> ISBNEntry(string isbn)
     {
-        return View(modelToSort);
-    }*/
-
+        Book testBook = await BooksAPIHandler.ISBNToBookInfo(isbn);
+        BookOrBorrowerInputModel bvm = new BookOrBorrowerInputModel();
+        bvm.BookInput = new BookInputModel();
+        bvm.BookInput.Author = testBook.Author.AuthorForename + " " + testBook.Author.AuthorSurname;
+        bvm.BookInput.ISBN = testBook.ISBN;
+        bvm.BookInput.Publisher = testBook.Publisher;
+        bvm.BookInput.DatePublished = testBook.DatePublished;
+        bvm.BookInput.BookName = testBook.Title;
+        return View("Index",bvm);
+    }
 }
