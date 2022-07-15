@@ -22,7 +22,7 @@
     <table class="display" id="myTable">
         <thead>
             <tr>
-            <th></th>
+                <th></th>
                 <th>Title</th>
                 <th>Author Name</th>
                 <th>Publisher</th>
@@ -35,8 +35,8 @@
         </thead>
         <tbody>
         @foreach (var book in Model.CatalogEntries)
-            {
-                <tr>
+        {
+            <tr>
                 <td>
                     <label>
                         <input type="button" value="@book.BookID" class="hidden-button" onclick="location.href='@Url.Action("Delete", "Catalog")' + '?bookId=' + '@book.BookID'" />
@@ -62,63 +62,7 @@
                     </label>
                 </td>
             </tr>
-            /*<script>
-                function format(@(b)) {
-                    // `d` is the original data object for the row
-                    let a = "";
-                    a = '<table cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;">'
-                    for(let c in b.CopyList)
-                    {
-                        //c.BorrowInstanceList.sort(function (a,b){return a.isReturned)
-                        a = a + '<tr>' +
-                        '<td>Comments</td>' +
-                        '<td>' +
-                        c.Comments +
-                        '</td>' +
-                        '</tr>' 
-                    }
-
-                    '</table>'
-                    return (a);
-                }
-                $(b).ready(
-                    function () {
-                    var table = $('#mytable').DataTable({
-                        //ajax: '../ajax/data/objects.txt',
-                        columns: [
-                            {
-                                className: 'dt-control',
-                                orderable: false,
-                                data: null,
-                                defaultContent: '',
-                            },
-                            { data: 'Title' },
-                            { data: 'Author Name' },
-                            { data: 'Publisher' },
-                            { data: 'ISBN' },
-                            { data: 'DatePublished'},
-                            { data: 'Copies'}
-                        ],
-                        order: [[1, 'asc']],
-                    });
-                 
-                    // Add event listener for opening and closing details
-                    $('#myTable tbody').on('click', 'td.dt-control', function () {
-                        var tr = $(this).closest('tr');
-                        var row = table.row(tr);
-                 
-                        if (row.child.isShown()) {
-                            // This row is already open - close it
-                            row.child.hide();
-                            tr.removeClass('shown');
-                        } else {
-                            // Open this row
-                            row.child(format(row.data())).show();
-                            tr.addClass('shown');
-                        }
-                    });
-                </script>*/
-            }
+        }
         </tbody>
     </table>
 </div>
