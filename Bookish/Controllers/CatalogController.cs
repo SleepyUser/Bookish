@@ -62,9 +62,18 @@ public class CatalogController : Controller
                     AuthorSurname = authorSurname,
                     AuthorForename = authorForename,
                 };
-                context.Authors.Add(author);
-                context.SaveChanges();
-                
+                foundAuthor = context.Authors.SingleOrDefault(a =>
+                    a.AuthorForename == author.AuthorForename && a.AuthorSurname == author.AuthorSurname);
+                if (foundAuthor != null)
+                {
+                    author = foundAuthor;
+                }
+                else
+                {
+                    context.Authors.Add(author);
+                    context.SaveChanges();
+                }
+
                 var book = new Book()
                 {
                     ISBN = isbn,
@@ -89,7 +98,10 @@ public class CatalogController : Controller
         string phonenumber = model.BorrowerInput.PhoneNumber;
         using (var context = new LibraryContext())
         {
-            Borrower? foundBorrower = context.Borrowers.SingleOrDefault(a => a.Surname == surname && a.Forename == forename && a.PhoneNumber == phonenumber );
+            Borrower? foundBorrower = context.Borrowers.SingleOrDefault(a =>
+                a.Surname == surname &&
+                a.Forename == forename &&
+                a.PhoneNumber == phonenumber);
             if (foundBorrower != null)
             {
                 //member already exists, do something
@@ -108,7 +120,7 @@ public class CatalogController : Controller
         }
         return View();
     }
-
+    
     public void AddCopiesOfBook(int newCopies, LibraryContext context, Book book)
     {
         List<Copy> newCopyList = new List<Copy>();
@@ -150,7 +162,7 @@ public class CatalogController : Controller
         }
         return View(bvm);
     }
-    
+
     [HttpGet]
     public IActionResult GetCopyList(int bookInputId)
     {
@@ -165,6 +177,82 @@ public class CatalogController : Controller
         return View(cvm);
     }
 
+    [HttpGet]
+    public IActionResult Delete(int bookId)
+    {
+
+        Book? foundBook;
+        using (var context = new LibraryContext())
+        {
+            foundBook = context.Books.SingleOrDefault(a => a.BookID == bookId);
+            if (foundBook == null)
+            {
+                //Do Nothing
+            }
+            else
+            {
+                context.Remove(foundBook);
+                context.SaveChanges();
+            }
+        }
+
+        return RedirectToAction("DisplayBookList");
+    }
+
+    [HttpGet]
+    public IActionResult Edit(int bookId)
+    {
+        Book? foundBook;
+        using (var context = new LibraryContext())
+        {
+            foundBook = context.Books.SingleOrDefault(a => a.BookID == bookId);
+            foundBook.Author = context.Authors.SingleOrDefault(a => a.AuthorID == foundBook.AuthorID);
+            if (foundBook == null)
+            {
+                throw new Exception("NO BOOK!");
+            }
+            else
+            {
+                foundBook.Author = context.Authors.SingleOrDefault(a => a.AuthorID == foundBook.AuthorID);
+            }
+        }
+        return View(foundBook);
+    }
+
+    [HttpPost]
+    public IActionResult Edit(Book book)
+    {
+        using (var context = new LibraryContext())
+        {
+            Book? foundBook = context.Books.SingleOrDefault(b => b.BookID == book.BookID);
+            Author? foundAuthor = context.Authors.SingleOrDefault(a =>
+                a.AuthorForename == book.Author.AuthorForename && a.AuthorSurname == book.Author.AuthorSurname);
+            if(foundBook != null)
+            {
+                if (foundAuthor == null)
+                {
+                    foundAuthor = new Author()
+                        { AuthorForename = book.Author.AuthorForename, AuthorSurname = book.Author.AuthorSurname };
+                    
+                    context.Authors.Add(foundAuthor);
+
+                }
+                book.Author = foundAuthor;
+                Book freshBookCopy = context.Books.SingleOrDefault(b => b.BookID == book.BookID);
+                if (freshBookCopy != null)
+                {
+                    freshBookCopy.Title = book.Title;
+                    freshBookCopy.Author = foundAuthor;
+                    freshBookCopy.Publisher = book.Publisher;
+                    freshBookCopy.DatePublished = book.DatePublished;
+                    freshBookCopy.ISBN = book.ISBN;
+                    context.Update(freshBookCopy);
+                }
+                context.SaveChanges();
+            }
+        }
+        return RedirectToAction("DisplayBookList");
+    }
     /*public IActionResult SortList(BookViewModel modelToSort)
     {
         return View(modelToSort);
