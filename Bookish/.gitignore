@@ -15,7 +15,7 @@ nupkg/
 .idea
 
 #Keys
-*/Keys
+*/Keys.cs
 
 # User-specific files
 *.suo

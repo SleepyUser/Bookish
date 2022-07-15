@@ -150,6 +150,20 @@ public class CatalogController : Controller
         }
         return View(bvm);
     }
+    
+    [HttpGet]
+    public IActionResult GetCopyList(int bookInputId)
+    {
+        CopyViewModel cvm = new CopyViewModel();
+        using (var context = new LibraryContext())
+        {
+            cvm.Book = context.Books
+                .Include(b => b.CopyList)
+                .Include(b => b.Author)
+                .Single(b => b.BookID == bookInputId);
+        }
+        return View(cvm);
+    }
 
     /*public IActionResult SortList(BookViewModel modelToSort)
     {

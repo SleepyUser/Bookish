@@ -1,0 +1,53 @@
+﻿@using Microsoft.EntityFrameworkCore.Metadata.Internal
+@model Bookish.Models.CopyViewModel
+
+@{
+    ViewBag.Title = "Copy List";
+}
+
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.3/font/bootstrap-icons.css">
+        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.css">
+        <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.js"></script>
+        <title>BookCopies</title>
+    </head>
+    <body>
+    <div>
+        <legend>Showing copies of @Model.Book.Title by @Model.Book.Author.AuthorForename @Model.Book.Author.AuthorSurname</legend>
+        <table class="display" id="myTable">
+            <thead>
+            <tr>
+                <th>Comments</th>
+                <th>User Borrowing</th>
+                <th>Borrow Date</th>
+                <th>Return Date</th>
+                <th></th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (Copy c in Model.Book.CopyList)
+            {
+                <tr>
+                    <td>@c.Comments</td>
+                    <td>@((c.BorrowInstanceList == null) ? "" : c.BorrowInstanceList.Last().Borrower.Surname +","+ @c.BorrowInstanceList.Last().Borrower.Forename)</td>
+                    <td>@((c.BorrowInstanceList == null) ? "" : c.BorrowInstanceList.Last().BorrowDate)</td>
+                    <td>@((c.BorrowInstanceList == null) ? "" : c.BorrowInstanceList.Last().ReturnDate)</td>
+                    <td><button class="btn-outline-info"><i class="bi bi-pencil"></i></button></td>
+                    <td><button class="btn-outline-danger"><i class="bi bi-trash"></i></button></td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+    </body>
+    <script>
+        $(document).ready( function () {
+            $('#myTable').DataTable();
+        } );
+    </script>
+</html>
