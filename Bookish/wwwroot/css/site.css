@@ -68,3 +68,23 @@ b {
   background-size: 100% 160%;
   background-position: bottom;
 }
+
+.hidden-button{
+  display: none;
+}
+
+.button-icon{
+  cursor:pointer;
+}
+
+.bi-pencil{
+  color:dodgerblue;
+}
+
+.bi-stack{
+  color: forestgreen;
+}
+
+.bi-trash{
+  color: darkred;
+}

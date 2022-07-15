@@ -1,4 +1,4 @@
-﻿@using Microsoft.EntityFrameworkCore.Metadata.Internal
+@using Microsoft.EntityFrameworkCore.Metadata.Internal
 @model Bookish.Models.CopyViewModel
 
 @{
@@ -18,8 +18,8 @@
     <body>
     <div>
         <legend>Showing copies of @Model.Book.Title by @Model.Book.Author.AuthorForename @Model.Book.Author.AuthorSurname</legend>
-        <table class="display" id="myTable">
-            <thead>
+    <table class="display" id="myTable">
+        <thead>
             <tr>
                 <th>Comments</th>
                 <th>User Borrowing</th>
@@ -28,8 +28,8 @@
                 <th></th>
                 <th></th>
             </tr>
-            </thead>
-            <tbody>
+        </thead>
+        <tbody>
             @foreach (Copy c in Model.Book.CopyList)
             {
                 <tr>
@@ -39,12 +39,12 @@
                     <td>@((c.BorrowInstanceList == null) ? "" : c.BorrowInstanceList.Last().ReturnDate)</td>
                     <td><button class="btn-outline-info"><i class="bi bi-pencil"></i></button></td>
                     <td><button class="btn-outline-danger"><i class="bi bi-trash"></i></button></td>
-                </tr>
+             </tr>
             }
-            </tbody>
-        </table>
-    </div>
-    </body>
+        </tbody>
+    </table>
+</div>
+</body>
     <script>
         $(document).ready( function () {
             $('#myTable').DataTable();
