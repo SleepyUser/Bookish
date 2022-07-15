@@ -16,3 +16,23 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+.hidden-button{
+  display: none;
+}
+
+.button-icon{
+  cursor:pointer;
+}
+
+.bi-pencil{
+  color:dodgerblue;
+}
+
+.bi-stack{
+  color: forestgreen;
+}
+
+.bi-trash{
+  color: darkred;
+}
