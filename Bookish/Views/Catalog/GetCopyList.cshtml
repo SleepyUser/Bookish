@@ -17,7 +17,7 @@
     </head>
     <body>
     <div>
-        <legend>Showing copies of @Model.Book.Title by @Model.Author.AuthorForename @Model.Author.AuthorSurname</legend>
+        <legend>Showing copies of @Model.Book.Title by @Model.Book.Author.AuthorForename @Model.Book.Author.AuthorSurname</legend>
         <table class="display" id="myTable">
             <thead>
             <tr>
@@ -30,13 +30,13 @@
             </tr>
             </thead>
             <tbody>
-            @foreach (Copy c in Model.CatalogEntries)
+            @foreach (Copy c in Model.Book.CopyList)
             {
                 <tr>
                     <td>@c.Comments</td>
-                    <td>@((c.BorrowInstanceList.Count != 0) ? c.BorrowInstanceList.Last().Borrower.Surname +","+ @c.BorrowInstanceList.Last().Borrower.Forename  : "")</td>
-                    <td>@((c.BorrowInstanceList.Count != 0) ? c.BorrowInstanceList.Last().BorrowDate: "")</td>
-                    <td>@((c.BorrowInstanceList.Count != 0) ? c.BorrowInstanceList.Last().ReturnDate: "")</td>
+                    <td>@((c.BorrowInstanceList == null) ? "" : c.BorrowInstanceList.Last().Borrower.Surname +","+ @c.BorrowInstanceList.Last().Borrower.Forename)</td>
+                    <td>@((c.BorrowInstanceList == null) ? "" : c.BorrowInstanceList.Last().BorrowDate)</td>
+                    <td>@((c.BorrowInstanceList == null) ? "" : c.BorrowInstanceList.Last().ReturnDate)</td>
                     <td><button class="btn-outline-info"><i class="bi bi-pencil"></i></button></td>
                     <td><button class="btn-outline-danger"><i class="bi bi-trash"></i></button></td>
                 </tr>
