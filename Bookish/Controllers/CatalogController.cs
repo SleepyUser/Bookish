@@ -181,10 +181,10 @@ public class CatalogController : Controller
         Book? foundBook;
         using (var context = new LibraryContext())
         {
-            foundBook = context.Books.SingleOrDefault(a => a.BookID == bookId );
+            foundBook = context.Books.SingleOrDefault(a => a.BookID == bookId);
             if (foundBook == null)
             {
-                throw new Exception("NO BOOK!");
+                //Do Nothing
             }
             else
             {
@@ -196,7 +196,6 @@ public class CatalogController : Controller
         return RedirectToAction("DisplayBookList");
     }
 
-
     [HttpGet]
     public IActionResult Edit(int bookId)
     {
@@ -204,9 +203,9 @@ public class CatalogController : Controller
         using (var context = new LibraryContext())
         {
             foundBook = context.Books.SingleOrDefault(a => a.BookID == bookId);
+            foundBook.Author = context.Authors.SingleOrDefault(a => a.AuthorID == foundBook.AuthorID);
             if (foundBook == null)
             {
-                //error stuff
                 throw new Exception("NO BOOK!");
             }
             else
