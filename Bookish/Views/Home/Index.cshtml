@@ -4,8 +4,6 @@
 
 @model BookOrBorrowerInputModel
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
     @using (Html.BeginForm("AddNewBook", "Catalog", FormMethod.Post))
     {
         
@@ -23,15 +21,15 @@
     }
     
     @using (Html.BeginForm("AddNewBorrower", "Catalog", FormMethod.Post))
-        {
-            <fieldset>
-                
-                <legend>Enter a borrower:</legend>
-                @Html.TextBoxFor(m => m.BorrowerInput.PhoneNumber, new{@type="text", placeholder="Phone number", pattern="^[\\+]?[(]?[0-9]{3}[)]?[-\\s\\.]?[0-9]{3}[-\\s\\.]?[0-9]{4,6}$", title = "Please enter a phone number"})
-                @Html.TextBoxFor(m => m.BorrowerInput.Forename, new{@type="text", placeholder="Forename", pattern="^[A-Za-z ,.'-]+$" })
-                @Html.TextBoxFor(m => m.BorrowerInput.Surname, new{@type="text", placeholder="Surname", pattern="^[A-Za-z ,.'-]+$" })
-                <input type="submit" value="Enter borrower info" />
-    
-            </fieldset>
-        }
+    {
+        <fieldset>
+            
+            <legend>Enter a borrower:</legend>
+            @Html.TextBoxFor(m => m.BorrowerInput.PhoneNumber, new{@type="text", placeholder="Phone number", pattern="^[\\+]?[(]?[0-9]{3}[)]?[-\\s\\.]?[0-9]{3}[-\\s\\.]?[0-9]{4,6}$", title = "Please enter a phone number"})
+            @Html.TextBoxFor(m => m.BorrowerInput.Forename, new{@type="text", placeholder="Forename", pattern="^[A-Za-z ,.'-]+$" })
+            @Html.TextBoxFor(m => m.BorrowerInput.Surname, new{@type="text", placeholder="Surname", pattern="^[A-Za-z ,.'-]+$" })
+            <input type="submit" value="Enter borrower info" />
+
+        </fieldset>
+    }
 </div>
