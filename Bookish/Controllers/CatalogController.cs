@@ -115,6 +115,15 @@ public class CatalogController : Controller
         return View(bvm);
     }
 
+    public IActionResult EditBook(BookViewModel bvm)
+    {
+        return View("BookList", bvm);
+    }
+
+    public IActionResult DeleteBook(BookViewModel bvm)
+    {
+        return View("BookList", bvm);
+    }
     /*public IActionResult SortList(BookViewModel modelToSort)
     {
         return View(modelToSort);
