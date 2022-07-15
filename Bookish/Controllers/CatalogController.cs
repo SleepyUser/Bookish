@@ -115,14 +115,16 @@ public class CatalogController : Controller
         return View(bvm);
     }
     
-    public IActionResult CopyList(int inputId)
+    [HttpGet]
+    public IActionResult GetCopyList(int inputId)
     {
         CopyViewModel cvm = new CopyViewModel();
         using (var context = new LibraryContext())
         {
-            cvm.CatalogEntries = context.Copies.Include(b => b.BorrowInstanceList)
+            cvm.CatalogEntries = context.Copies.Include(b => b.BorrowInstanceList).Include(bo => bo.Book)
                 .Where(b => b.BookID == inputId)
                 .ToList();
+            /*cvm.Author = context.Authors.Where(a => a.AuthorID == context.Books.Single(bo => bo.BookID == inputId).BookID).First();*/
         }
         return View(cvm);
     }

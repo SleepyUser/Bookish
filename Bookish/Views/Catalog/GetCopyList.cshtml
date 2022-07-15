@@ -8,7 +8,7 @@
 <!DOCTYPE html>
 
 <html lang="en">
-<head>
+    <head>
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.3/font/bootstrap-icons.css">
         <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.css">
@@ -17,17 +17,7 @@
     </head>
     <body>
     <div>
-        @{ 
-            Book? foundBook; 
-            Author? foundAuthor; 
-        }
-        @using (var context = new LibraryContext())
-        {
-            foundBook = context.Books.SingleOrDefault(a =>
-                a.BookID == Model.CatalogEntries.First().BookID);
-            foundAuthor = context.Authors.SingleOrDefault(a => a.AuthorID == foundBook.AuthorID);
-        }
-        <legend>Showing copies of @foundBook.Title by @foundAuthor.AuthorForename @foundAuthor.AuthorSurname</legend>
+        <legend>Showing copies of @Model.Book.Title by @Model.Book.Author.AuthorForename @Model.Book.Author.AuthorSurname</legend>
         <table class="display" id="myTable">
             <thead>
             <tr>
